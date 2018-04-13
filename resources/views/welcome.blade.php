@@ -1,95 +1,95 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('parts.template')
+@section('content')
 
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+<div class="billboard">
+    <div class="bg">
+    <div class="pattern">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="content">
+                        <div class="text_footer">
+                            <h1>
+                                SwissPass – the key to mobility and leisure.
+                            </h1>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut libero, non nihil. Blanditiis magni tempora sint labore odit, laboriosam tempore quia sequi esse, id dicta dolor ab expedita eius, itaque.
+                            </p>
+                            <a href="#" class="btn-sb transparent">
+                                More information
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </body>
-</html>
+    </div>
+    </div>
+</div>
+
+
+<a name="register" style="float: left; margin-top: -150px; visibility: hidden;">
+</a>
+
+<div class="create_your_acc">
+    <div class="bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 login" id="login">
+                    <div class="content">
+                        <h3>Why get a passport?</h3>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat et fugit ducimus soluta neque quia ipsum sed, obcaecati. A aliquam magni tenetur dolorum laborum ipsa ad, sint cumque optio excepturi.
+                        </p>
+
+                        <h3>
+                            Log in now
+                        </h3>
+                        <form class="formulariologin" action="{{url('/login_form')}}" method="post" >
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="text" class="form-control" name="email" placeholder="Email">
+                                    </div>
+                                    <p class="text-danger" style="margin-top: -10px; opacity: 1;">
+                                        {{ $errors->first('email') }}
+                                    </p>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Password</label>
+                                        <input type="password" class="form-control" name="password" placeholder="Password">
+                                    </div>
+                                    <p class="text-danger" style="margin-top: -10px; opacity: 1;">
+                                        {{ $errors->first('password') }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn-sb inverse">
+                                            Login
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-md-6 register">
+                    <div class="content">
+                        <h3>Register your account now! <small>
+                            Complete the fields carefully to obtain your passport.
+                        </small></h3>
+                        @include('users.forms.register')
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
