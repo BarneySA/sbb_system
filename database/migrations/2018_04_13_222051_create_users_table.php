@@ -12,6 +12,7 @@ class CreateUsersTable extends Migration {
 			$table->timestamps();
 			$table->softDeletes();
 			$table->string('name', 200);
+			$table->string('email', 200);
 			$table->string('username')->nullable();
 			$table->string('password', 300);
 			$table->date('birthdate');
@@ -21,6 +22,7 @@ class CreateUsersTable extends Migration {
 			$table->string('wallet_address', 300);
 			$table->rememberToken('rememberToken');
 			$table->integer('status')->default('1');
+			$table->integer('role')->default('0');
 		});
 	}
 
