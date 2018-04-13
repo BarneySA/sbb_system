@@ -51,7 +51,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Gender</label>
-                    <select name="gender" class="form-control" id="">
+                    <select name="gender" class="form-control" >
                         <option>F</option>
                         <option>M</option>
                     </select>
@@ -65,7 +65,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>City</label>
-                    <select name="city" class="form-control" id="">
+                    <select name="city" class="form-control" >
                         <option>Zürich</option>
                         <option>Geneva</option>
                         <option>Basel</option>
