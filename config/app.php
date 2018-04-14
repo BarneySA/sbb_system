@@ -237,7 +237,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Pusher' => Pusher\Laravel\Facades\Pusher::class,
-        'QRCode' => LaravelQRCode\Facades\QRCode::class
+        'QRCode' => LaravelQRCode\Facades\QRCode::class,
 
     ],
 

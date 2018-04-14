@@ -58,14 +58,65 @@ class ProductController extends Controller
     return view('products.category', ['category' => $category, 'products' => $products]);
   }
 
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return Response
-   */
-  public function create()
+  public function product ($slug) 
   {
-    
+    $product = Product::where('slug', $slug)->get();
+    return view('products.product', ['product' => $product]);
+  }
+  
+  public function register_transaction(Request $request)
+  {
+    $product = Product::find($request->input('product_id'));
+    $amount = $request->input('amount');
+    $currency = $request->input('currency');
+
+    $user = Auth::user();
+    $system = Configuration::all()->first();
+
+    $category = \DB::table('productsincategories')->where('product_id', $product->id)->get()->first();
+
+    $client = new \GuzzleHttp\Client();
+    $geolocation = $client->get('https://api.ipdata.co/')->getBody();
+    $geolocation = json_decode($geolocation);
+
+    $url_neo = config('app.neo_bridge_url').'/wallet/transfer/'.$user->wallet_address.'/'.$user->wallet_public_key.'/'.$system->wallet_address.'/'.$amount.'/'.$currency;
+    return response()->json([
+        'error' => false,
+        'response' => 'Purchase made successfully! we will send you an email with the information of the transaction.',
+        'request' => $url_neo
+    ]);
+    $transfer = $client->get($url_neo)->getBody();
+    $transfer = json_decode($transfer);
+
+
+    if (count($transfer)>=1) {
+      return response()->json([
+          'error' => true,
+          'response' => 'Something happened when transferring funds from your wallet, please verify that you have sufficient funds.',
+          'request' => $transfer
+      ]);
+    } else {
+      $transaction = new Transaction;
+      $transaction->category_id = $category->id;
+      $transaction->product_id = $product->id;
+      $transaction->user_id = Auth::user()->id;
+      $transaction->from = $user->wallet_address;
+      $transaction->for = $system->wallet_address;
+      $transaction->currency_name = $currency;
+      $transaction->amount = $amount;
+      $transaction->txid = $transfer->response->txid;
+      $transaction->description = 'Transaction made for the purchase of the product "('.$product->id.') '.$product->title.'"';
+      $transaction->contry = $geolocation->country_code;
+      $transaction->city = $geolocation->city;
+      $transaction->save();
+  
+      return response()->json([
+          'error' => false,
+          'response' => 'Purchase made successfully! we will send you an email with the information of the transaction.',
+          'request' => $transfer
+      ]);
+    }
+
   }
 
   /**

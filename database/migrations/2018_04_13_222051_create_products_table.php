@@ -11,6 +11,7 @@ class CreateProductsTable extends Migration {
 			$table->increments('id');
 			$table->timestamps();
 			$table->string('title', 300);
+			$table->string('slug', 300);
 			$table->text('description')->nullable();
 			$table->string('billboard', 300);
 			$table->string('amount');

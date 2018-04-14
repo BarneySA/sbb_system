@@ -52,6 +52,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/categories', 'ProductController@categories');
         Route::get('/category/{slug}', 'ProductController@category');
     });
+    
+    Route::get('/product/{slug}', 'ProductController@product');
+    Route::post('/product/register_transaction', 'ProductController@register_transaction');
 
 });
 

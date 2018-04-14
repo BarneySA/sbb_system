@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e03ddf00ae9df15b0790f9a55d340f64",
+    "content-hash": "2e488235fe8d876fa0cfe7e85901a10a",
     "packages": [
         {
             "name": "cityofzion/neo-php",
@@ -959,6 +959,54 @@
                 "storage"
             ],
             "time": "2018-04-06T09:58:14+00:00"
+        },
+        {
+            "name": "midnite81/geolocation",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/midnite81/geolocation.git",
+                "reference": "934901bb23a310bd482419cdcd95552185ee1820"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/midnite81/geolocation/zipball/934901bb23a310bd482419cdcd95552185ee1820",
+                "reference": "934901bb23a310bd482419cdcd95552185ee1820",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.2",
+                "laravel/framework": "5.*",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "component": "package",
+                "frameworks": [
+                    "Laravel 5"
+                ]
+            },
+            "autoload": {
+                "psr-4": {
+                    "Midnite81\\GeoLocation\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Rogers",
+                    "email": "webdev@centralblue.co.uk"
+                }
+            ],
+            "description": "A laravel package to hook into IP Info DB Service",
+            "keywords": [
+                "laravel",
+                "sms"
+            ],
+            "time": "2016-10-15T18:39:24+00:00"
         },
         {
             "name": "monolog/monolog",
