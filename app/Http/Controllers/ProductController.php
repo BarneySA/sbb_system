@@ -43,7 +43,19 @@ class ProductController extends Controller
   public function category($slug)
   {
     $category = Category::where('slug', $slug)->get();
-    return view('products.category', ['category' => $category]);
+
+    $products = collect();
+    if (count($category)==1) {
+      foreach (\DB::table('productsincategories')->where('category_id', $category[0]->id)->get() as $product_id) {
+       $product = Product::find($product_id->product_id);
+       if ($product) {
+         if ($product->status==1) {
+           $products->push($product);
+         }
+       } 
+      }
+    }
+    return view('products.category', ['category' => $category, 'products' => $products]);
   }
 
   /**

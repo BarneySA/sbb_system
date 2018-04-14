@@ -72,7 +72,7 @@
 <div class="page_profile">
 <div class="container">
     <div class="row">
-        <div class="col-md-12 pb-5 pt-5">
+        <div class="col-md-12 pb-5 pt-3">
             @yield('user_content')
         </div>
     </div>
