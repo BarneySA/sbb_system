@@ -74,43 +74,31 @@ class AuthController extends Controller
     
     public function auth_token (Request $request) {
 
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|max:60',
-            'password' => 'required|max:60'
-        ]);
-
-        if ($validator->fails()) {
+        $SecurityToken = SecurityToken::where('token', $request->input('token'));
+        if ($SecurityToken->count()==0) {
             return response()->json([
                 'error' => true,
-                'input' => true,
-                'response' => $validator->errors()
+                'response' => 'The entered token does not exist, please verify and try again.'
             ]);
         } else {
-            $SecurityToken = SecurityToken::where('token', $request->input('token'));
-            if ($SecurityToken->count()==0) {
-                return response()->json([
-                    'error' => true,
-                    'response' => 'The entered token does not exist, please verify and try again.'
-                ]);
-            } else {
-                $SecurityToken = $SecurityToken->get()->first();
-                $user = User::find($SecurityToken->user_id);
+            $SecurityToken = $SecurityToken->get()->first();
+            $user = User::find($SecurityToken->user_id);
 
-                SecurityToken::where('user_id', $user->id)->where('identifier', 'LOGIN')->delete();
-                Auth::loginUsingId($user->id, true);
+            SecurityToken::where('user_id', $user->id)->where('identifier', 'LOGIN')->delete();
+            Auth::loginUsingId($user->id, true);
 
-                $traking = new Tracking;
-                $traking->description = 'The user: ['.$user->id.'] '.$user->name.', Start session in the system successfully.';
-                $traking->save();
+            $traking = new Tracking;
+            $traking->description = 'The user: ['.$user->id.'] '.$user->name.', Start session in the system successfully.';
+            $traking->save();
 
-                return response()->json([
-                    'error' => false,
-                    'response' => 'Thank you for validating your login, you will be redirected to your account!',
-                    'redirect' => url('/cp')
-                ]);
-            }
-
+            return response()->json([
+                'error' => false,
+                'response' => 'Thank you for validating your login, you will be redirected to your account!',
+                'redirect' => url('/cp')
+            ]);
         }
+
+        
     }
 }
 

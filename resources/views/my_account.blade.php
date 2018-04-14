@@ -11,7 +11,7 @@
                     <div class="content">
                         <div class="text_footer welcome">
                             <h1>
-                                Welcome, {{\Auth::user()->username}}
+                                Welcome, {{\Auth::user()->name}}
                             </h1>
                             <p>
                                 Manage and manage your account from this control panel!
@@ -30,8 +30,8 @@
                                 <img src="{{url('/images/logo2.png')}}" class="logo" alt="Logo SB">
                             </div>
                             <div class="title_wallet">Your wallet number:</div>
-                            <div class="number">{{\Auth::user()->getAddress}}</div>
-                            <div class="name">{{\Auth::user()->username}}</div>
+                            <div class="number">{{\Auth::user()->wallet_address}}</div>
+                            <div class="name">{{\Auth::user()->name}}</div>
                         </div>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
     <div class="content">
         <img src="{{App\User::auth()->qr}}" alt="">
         <span>
-            {{App\User::auth()->getAddress}}
+            {{\Auth::user()->wallet_address}}
         </span>
     </div>
 </div>

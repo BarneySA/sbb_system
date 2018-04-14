@@ -6,6 +6,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
 
+use Auth;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -27,5 +29,24 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public static function auth (){
+    	$user = Auth::user();
+    	$user->balance = [
+            'NEO' => 0,
+            'GAS' => 0
+        ];
+
+        $client = new \GuzzleHttp\Client();
+        
+        // Para optener balance
+        $res = $client->get(config('app.neo_bridge_url').'/wallet/balance/AJ4GYU9cnaZithFq61fhdLmKsjZgn4dNkG')->getBody();
+        $res = json_decode($res);
+        $user->balance = $res;
+
+        $user->qr = url('/qr-code/'.$user->wallet_address);
+        
+		return $user;
+    }
 
 }

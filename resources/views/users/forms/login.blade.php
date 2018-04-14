@@ -40,108 +40,115 @@
     </div>
 </form>
 
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
 <script>
-    const app = new Vue({
-        el: '.formulariologin',
-        data: function () {
-            return {
-                step: 1
-            }
-        },
-        methods: {
-            auth: function () {
-                var vm = this;
-            
-                if(vm.step==1) {
-                    $.ajax({
-                        type: "post",
-                        url: "/login",
-                        data: $('.formulariologin').serialize(),
-                        dataType: "json",
-                        success: function (response) {
-                            if(response.error==true) {
-                                if (response.input) {
-                                    $('.errortrue').remove();
-                                    $.each(response.response, function (indexInArray, valueOfElement) { 
-                                        var input = $('.formulariologin input[name="'+indexInArray+'"]');
-                                                                        
-                                        input.after(`
-                                            <div class="text-danger errortrue" style="margin-top: 3px;">
-                                                ${valueOfElement}
-                                            </div>                                 
-                                        `);
-                                    });
-                                } else {
-                                    $('.errortrue').remove();
-                                    $('.formulariologin').after(`
-                                        <div class="alert alert-danger text-danger errortrue" style="margin-top: 3px;">
-                                            ${response.response}
-                                        </div>    
-                                    `); 
-                                }
-                            } else {
-                                $('.errortrue').remove();
-                                $('.formulariologin').after(`
-                                    <div class="alert alert-success text-success errortrue" style="margin-top: 3px;">
-                                        ${response.response}
-                                    </div>    
-                                `); 
-                                vm.step = 2;
-                            }
-                        }
-                    });
-                } 
 
-                if(vm.step==2) {
-                    $.ajax({
-                        type: "post",
-                        url: "/login/auth_token",
-                        data: $('.formulariologin').serialize(),
-                        dataType: "json",
-                        success: function (response) {
-                            console.log(response);
-
-                            if(response.error==true) {
-                                if (response.input) {
-                                    $('.errortrue').remove();
-                                    $.each(response.response, function (indexInArray, valueOfElement) { 
-                                        var input = $('.formulariologin input[name="'+indexInArray+'"]');
-                                                                        
-                                        input.after(`
-                                            <div class="text-danger errortrue" style="margin-top: 3px;">
-                                                ${valueOfElement}
-                                            </div>                                 
-                                        `);
-                                    });
-                                } else {
-                                    $('.errortrue').remove();
-                                    $('.formulariologin').after(`
-                                        <div class="alert alert-danger text-danger errortrue" style="margin-top: 3px;">
-                                            ${response.response}
-                                        </div>    
-                                    `); 
-                                }
-                            } else {
-                                $('.errortrue').remove();
-                                $('.formulariologin').after(`
-                                    <div class="alert alert-success text-success errortrue" style="margin-top: 3px;">
-                                        ${response.response}
-                                    </div>    
-                                `); 
-                                if (response.redirect) {
-                                    setTimeout(() => {
-                                        window.location.href=response.redirect;
-                                    }, 1500);
-                                }
-                            }
-                        }
-                    });
+    $(document).ready(function(){
+        const app = new Vue({
+            el: '.formulariologin',
+            data: function () {
+                var url = $('meta[name="site_url"]').attr('content');
+                console.log(url);
+                return {
+                    step: 1,
+                    url: url
                 }
-
+            },
+            
+            methods: {
+                auth: function () {
+                    var vm = this;
                 
-            }
-        }
-    });
+                    if(vm.step==1) {
+                        $.ajax({
+                            type: "post",
+                            url: vm.url+"/login",
+                            data: $('.formulariologin').serialize(),
+                            dataType: "json",
+                            success: function (response) {
+                                if(response.error==true) {
+                                    if (response.input) {
+                                        $('.errortrue').remove();
+                                        $.each(response.response, function (indexInArray, valueOfElement) { 
+                                            var input = $('.formulariologin input[name="'+indexInArray+'"]');
+                                                                            
+                                            input.after(`
+                                                <div class="text-danger errortrue" style="margin-top: 3px;">
+                                                    ${valueOfElement}
+                                                </div>                                 
+                                            `);
+                                        });
+                                    } else {
+                                        $('.errortrue').remove();
+                                        $('.formulariologin').after(`
+                                            <div class="alert alert-danger text-danger errortrue" style="margin-top: 3px;">
+                                                ${response.response}
+                                            </div>    
+                                        `); 
+                                    }
+                                } else {
+                                    $('.errortrue').remove();
+                                    $('.formulariologin').after(`
+                                        <div class="alert alert-success text-success errortrue" style="margin-top: 3px;">
+                                            ${response.response}
+                                        </div>    
+                                    `); 
+                                    vm.step = 2;
+                                }
+                            }
+                        });
+                    } 
 
+                    if(vm.step==2) {
+                        $.ajax({
+                            type: "post",
+                            url: vm.url+"/login/auth_token",
+                            data: $('.formulariologin').serialize(),
+                            dataType: "json",
+                            success: function (response) {
+                                console.log(response);
+
+                                if(response.error==true) {
+                                    if (response.input) {
+                                        $('.errortrue').remove();
+                                        $.each(response.response, function (indexInArray, valueOfElement) { 
+                                            var input = $('.formulariologin input[name="'+indexInArray+'"]');
+                                                                            
+                                            input.after(`
+                                                <div class="text-danger errortrue" style="margin-top: 3px;">
+                                                    ${valueOfElement}
+                                                </div>                                 
+                                            `);
+                                        });
+                                    } else {
+                                        $('.errortrue').remove();
+                                        $('.formulariologin').after(`
+                                            <div class="alert alert-danger text-danger errortrue" style="margin-top: 3px;">
+                                                ${response.response}
+                                            </div>    
+                                        `); 
+                                    }
+                                } else {
+                                    $('.errortrue').remove();
+                                    $('.formulariologin').after(`
+                                        <div class="alert alert-success text-success errortrue" style="margin-top: 3px;">
+                                            ${response.response}
+                                        </div>    
+                                    `); 
+                                    if (response.redirect) {
+                                        setTimeout(() => {
+                                            window.location.href=response.redirect;
+                                        }, 1500);
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    
+                }
+            }
+        });
+    });
 </script>

@@ -12,27 +12,27 @@
             </h3>
         </div>
         <div class="col-6 col-md-2 text-center">
-            <h4>
-                {{App\User::auth()->balance['NEO']}}
+            <h5>
+                {{number_format(App\User::auth()->balance->NEO->balance, 10, ',', '.')}}
                 <span style="font-size: 14px; margin-top: 5px; display: block; opacity: .7;">
                     NEO
                     <span style="display: block; margin-top: 0">
                         Balance
                     </span>
                 </span>
-            </h4>
+            </h5>
 
         </div>
         <div class="col-6 col-md-2 text-center">
-            <h4>
-                {{App\User::auth()->balance['GAS']}}
+            <h5>
+                {{number_format(App\User::auth()->balance->GAS->balance, 10, ',', '.')}}
                 <span style="font-size: 14px; margin-top: 5px; display: block; opacity: .7;">
                     GAS
                     <span style="display: block; margin-top: 0">
                         Balance
                     </span>
                 </span>
-            </h4>
+            </h5>
 
         </div>
     </div>

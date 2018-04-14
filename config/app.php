@@ -16,6 +16,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application NEO BRIDGET
+    |--------------------------------------------------------------------------
+    */
+
+    'neo_bridge_url' => 'http://127.0.0.1:3000',
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
@@ -167,6 +175,7 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
+        LaravelQRCode\Providers\QRCodeServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -227,7 +236,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Pusher' => Pusher\Laravel\Facades\Pusher::class
+        'Pusher' => Pusher\Laravel\Facades\Pusher::class,
+        'QRCode' => LaravelQRCode\Facades\QRCode::class
 
     ],
 
