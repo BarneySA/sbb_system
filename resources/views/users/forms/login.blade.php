@@ -29,12 +29,19 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
+            <div v-if="loading==0">
                 <button type="button" @click="auth" class="btn-sb inverse" v-if="step==1">
                     LOGIN
                 </button>
                 <button type="button" @click="auth" class="btn-sb inverse" v-if="step==2">
                     VALIDATE
                 </button>
+            </div>
+            <div v-if="loading==1">
+                <button type="button" disabled class="btn-sb inverse">
+                    LOADING...
+                </button>
+            </div>
             </div>
         </div>
     </div>
@@ -52,14 +59,16 @@
                 console.log(url);
                 return {
                     step: 1,
-                    url: url
+                    url: url,
+                    loading: 0
                 }
             },
             
             methods: {
                 auth: function () {
                     var vm = this;
-                
+                    vm.loading = 1;
+
                     if(vm.step==1) {
                         $.ajax({
                             type: "post",
@@ -67,6 +76,7 @@
                             data: $('.formulariologin').serialize(),
                             dataType: "json",
                             success: function (response) {
+                                
                                 if(response.error==true) {
                                     if (response.input) {
                                         $('.errortrue').remove();
@@ -96,6 +106,8 @@
                                     `); 
                                     vm.step = 2;
                                 }
+
+                                vm.loading = 0;
                             }
                         });
                     } 
@@ -107,7 +119,6 @@
                             data: $('.formulariologin').serialize(),
                             dataType: "json",
                             success: function (response) {
-                                console.log(response);
 
                                 if(response.error==true) {
                                     if (response.input) {
@@ -142,6 +153,8 @@
                                         }, 1500);
                                     }
                                 }
+
+                                vm.loading = 0;
                             }
                         });
                     }

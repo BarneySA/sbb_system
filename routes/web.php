@@ -40,9 +40,11 @@ Route::get('qr-code/{text}', function ($text) {
 });
 
 Route::middleware(['auth'])->group(function () {
+
     // Rutas para usuarios CP
-    Route::prefix('cp')->group(function () {
-        Route::get('/', 'HomeController@index');
+    Route::prefix('/cp/users')->group(function () {
+        Route::get('/', 'UserController@index');
+        Route::get('/my_transactions', 'UserController@my_transactions');
     });
 
 });

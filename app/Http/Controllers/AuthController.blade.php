@@ -47,7 +47,7 @@ class AuthController extends Controller
                 
                 $request->session()->flush();
 
-                $code = substr(md5(date('Y-m-d H:m:i')), 0, 15);
+                $code = substr(md5(date('Y-m-d H:m:i')), 0, 30);
                 
                 // Eliminamos todos los tokens viejos
                 $SecurityToken = SecurityToken::where('user_id', $user->id)->where('identifier', 'LOGIN')->delete();
@@ -89,6 +89,7 @@ class AuthController extends Controller
 
             $traking = new Tracking;
             $traking->description = 'The user: ['.$user->id.'] '.$user->name.', Start session in the system successfully.';
+            $traking->user_id = $user->id;
             $traking->save();
 
             return response()->json([

@@ -7,14 +7,14 @@ use Illuminate\Http\Request;
 class UserController extends Controller 
 {
 
-  /**
-   * Display a listing of the resource.
-   *
-   * @return Response
-   */
-  public function index()
-  {
-    
+  public function index ()
+  {       
+      return view('my_account');
+  }
+
+  public function my_transactions ()
+  {       
+      return view('users.my_transactions');
   }
 
   /**

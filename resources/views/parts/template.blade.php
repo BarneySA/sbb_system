@@ -30,19 +30,6 @@
                                 Register
                             </a>
                         </li>
-                        <li>
-                            <div class="dropdown show">
-                              <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Curren: EN">
-                                Change language
-                              </a>
-
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="#">ES</a>
-                                <a class="dropdown-item" href="#">DE</a>
-                                <a class="dropdown-item" href="#">IT</a>
-                              </div>
-                            </div>
-                        </li>
                         @if(\Auth::check())
                             <li>
                                 <a href="{{url('/logouth')}}">
