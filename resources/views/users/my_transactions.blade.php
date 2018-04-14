@@ -45,10 +45,6 @@
                 Add funds to my wallet
             </button>
 
-
-            <a href="" class="btn-link" style="color: #000">
-                Download transaction history
-            </a>
         </div>
     </div>
     <div class="row mt-3">
@@ -67,13 +63,19 @@
 
 
             @php
-                $transactions = App\Transaction::where('user_id', \Auth::user()->id)->paginate(10);
+                $transactions = App\Transaction::where('user_id', \Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(10);
             @endphp
             @foreach($transactions as $transaction)
                 <div class="row">
                     <div class="col-md-12 my_transactions">
-
-                        <div class="transaction in">
+                        @php
+                            if($transaction->type==1) {
+                                $type='in';
+                            } else {
+                                $type='out';
+                            }
+                        @endphp
+                        <div class="transaction {{$type}}">
                             <div class="row">
                                 <div class="col-md-1">
                                     <div class="y">
@@ -108,6 +110,16 @@
                     {{ $transactions->links() }}
                 </div>
             </div>
+
+            @if(count($transactions)==0)
+            <div class="row">
+                <div class="col-md-12">
+                <div class="alert alert-danger text-danger">
+                    We do not find results.
+                </div>
+                </div>
+            </div>
+            @endif
 
 
 

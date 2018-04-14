@@ -47,7 +47,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/my_transactions', 'UserController@my_transactions');
     });
 
-    // Rutas para productos
     Route::prefix('/products')->group(function () {
         Route::get('/categories', 'ProductController@categories');
         Route::get('/category/{slug}', 'ProductController@category');
@@ -56,5 +55,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/product/{slug}', 'ProductController@product');
     Route::post('/product/register_transaction', 'ProductController@register_transaction');
 
+    // Rutas para administradores
+    Route::prefix('/cp/admin')->middleware('admin_auth')->group(function () {
+        Route::get('/transactions', 'UserController@admin_transactions');
+        Route::post('/transactions/{transaction_id}/refund', 'TransactionController@refund');
+        
+    });
 });
 

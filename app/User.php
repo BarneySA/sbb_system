@@ -40,7 +40,7 @@ class User extends Authenticatable
         $client = new \GuzzleHttp\Client();
         
         // Para optener balance
-        $res = $client->get(config('app.neo_bridge_url').'/wallet/balance/AJ4GYU9cnaZithFq61fhdLmKsjZgn4dNkG')->getBody();
+        $res = $client->get(config('app.neo_bridge_url').'/wallet/balance/'.$user->wallet_address)->getBody();
         $res = json_decode($res);
         $user->balance = $res;
 

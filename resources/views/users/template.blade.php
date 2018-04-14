@@ -49,7 +49,7 @@
             <div class="col-md-12">
                 <ul class="nav nav-tabs" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link active" href="{{url('/cp/users')}}">
+                    <a class="nav-link" href="{{url('/cp/users')}}">
                         Profile
                     </a>
                   </li>
@@ -68,6 +68,35 @@
         </div>
     </div>
 </div>
+
+@if(\Auth::user()->role==1)
+<div class="tabls_con admin">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        Products and categories
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        User Management
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{url('/cp/admin/transactions')}}">
+                        Transaction tracking
+                    </a>
+                  </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endif
 
 <div class="page_profile">
 <div class="container">

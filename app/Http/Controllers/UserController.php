@@ -17,6 +17,11 @@ class UserController extends Controller
       return view('users.my_transactions');
   }
 
+  public function admin_transactions() 
+  {
+    return view('users.admin.transactions');
+  }
+
   /**
    * Show the form for creating a new resource.
    *
