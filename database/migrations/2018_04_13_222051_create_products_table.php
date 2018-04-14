@@ -13,6 +13,8 @@ class CreateProductsTable extends Migration {
 			$table->string('title', 300);
 			$table->text('description')->nullable();
 			$table->string('billboard', 300);
+			$table->string('amount');
+			$table->string('currency');
 			$table->integer('status')->default('1');
 		});
 	}

@@ -59,7 +59,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{{url('/products')}}">
+                    <a class="nav-link" href="{{url('/products/categories')}}">
                         Products
                     </a>
                   </li>

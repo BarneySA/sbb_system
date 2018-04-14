@@ -12,6 +12,8 @@ class CreateAttributesTable extends Migration {
 			$table->timestamps();
 			$table->string('code', 100);
 			$table->string('value', 600);
+			$table->integer('position');
+			$table->integer('product_id');
 		});
 	}
 

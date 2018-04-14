@@ -35,7 +35,7 @@ Route::get('/thanks_for_the_registration', function () {
     return view('users.thanks_for_the_registration');
 });
 
-Route::get('qr-code/{text}', function ($text) {
+Route::get('/qr-code/{text}', function ($text) {
     return QRCode::text($text)->setSize(8)->png();
 });
 
@@ -45,6 +45,12 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('/cp/users')->group(function () {
         Route::get('/', 'UserController@index');
         Route::get('/my_transactions', 'UserController@my_transactions');
+    });
+
+    // Rutas para productos
+    Route::prefix('/products')->group(function () {
+        Route::get('/categories', 'ProductController@categories');
+        Route::get('/category/{slug}', 'ProductController@category');
     });
 
 });
