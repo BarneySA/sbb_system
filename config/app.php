@@ -176,6 +176,7 @@ return [
          */
         Laravel\Tinker\TinkerServiceProvider::class,
         LaravelQRCode\Providers\QRCodeServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -238,6 +239,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Pusher' => Pusher\Laravel\Facades\Pusher::class,
         'QRCode' => LaravelQRCode\Facades\QRCode::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class
 
     ],
 

@@ -80,16 +80,11 @@ class ProductController extends Controller
     $geolocation = json_decode($geolocation);
 
     $url_neo = config('app.neo_bridge_url').'/wallet/transfer/'.$user->wallet_address.'/'.$user->wallet_public_key.'/'.$system->wallet_address.'/'.$amount.'/'.$currency;
-    return response()->json([
-        'error' => false,
-        'response' => 'Purchase made successfully! we will send you an email with the information of the transaction.',
-        'request' => $url_neo
-    ]);
+
     $transfer = $client->get($url_neo)->getBody();
     $transfer = json_decode($transfer);
 
-
-    if (count($transfer)>=1) {
+    if (!isset($transfer->response)) {
       return response()->json([
           'error' => true,
           'response' => 'Something happened when transferring funds from your wallet, please verify that you have sufficient funds.',
@@ -102,7 +97,9 @@ class ProductController extends Controller
       $transaction->user_id = Auth::user()->id;
       $transaction->from = $user->wallet_address;
       $transaction->for = $system->wallet_address;
+      $transaction->localization_json = json_encode($geolocation);
       $transaction->currency_name = $currency;
+      $transaction->type = 1;
       $transaction->amount = $amount;
       $transaction->txid = $transfer->response->txid;
       $transaction->description = 'Transaction made for the purchase of the product "('.$product->id.') '.$product->title.'"';

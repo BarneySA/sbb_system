@@ -62,110 +62,54 @@
                     <p class="text-muted">
                         Here we present your last transactions, you can see fund income as well as expenses made in your account.
                     </p>
-                    <a href="" class="btn-"></a>
                 </div>
             </div>
 
 
+            @php
+                $transactions = App\Transaction::where('user_id', \Auth::user()->id)->paginate(10);
+            @endphp
+            @foreach($transactions as $transaction)
+                <div class="row">
+                    <div class="col-md-12 my_transactions">
+
+                        <div class="transaction in">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <div class="y">
+                                        {{$transaction->created_at->format('Y')}}
+                                    </div>
+                                    <div class="dd">
+                                        {{$transaction->created_at->format('m/d')}}
+                                    </div>
+                                </div>
+                                <div class="col-md-11">
+                                    <div class="amount">
+                                        {{number_format($transaction->amount, 10, ',', '.')}} {{$transaction->currency_name}}
+                                    </div>
+                                    <div class="description">
+                                        {{$transaction->description}}
+                                        <span style="display: block;">
+                                            <b>TXID:</b> {{$transaction->txid}} 
+                                            <b>Product:</b> {{App\Product::find($transaction->product_id)->title}}
+                                            <b>Transaction ID:</b> {{$transaction->id}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            @endforeach
 
             <div class="row">
-                <div class="col-md-12 my_transactions">
-
-                    <div class="transaction in">
-                        <div class="row">
-                            <div class="col-md-1">
-                                <div class="y">
-                                    2018
-                                </div>
-                                <div class="dd">
-                                    March 28
-                                </div>
-                            </div>
-                            <div class="col-md-11">
-                                <div class="amount">
-                                    0.005535
-                                    <span>
-                                        NEO TOKEN
-                                    </span>
-                                </div>
-                                <div class="description">
-                                    Ticket payment for transport A78 from the city of milan italy, to new Swiss port.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="transaction out">
-                        <div class="row">
-                            <div class="col-md-1">
-                                <div class="y">
-                                    2018
-                                </div>
-                                <div class="dd">
-                                    March 28
-                                </div>
-                            </div>
-                            <div class="col-md-11">
-                                <div class="amount">
-                                    0.005535
-                                    <span>
-                                        NEO TOKEN
-                                    </span>
-                                </div>
-                                <div class="description">
-                                    Ticket payment for transport A78 from the city of milan italy, to new Swiss port.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="transaction out">
-                        <div class="row">
-                            <div class="col-md-1">
-                                <div class="y">
-                                    2018
-                                </div>
-                                <div class="dd">
-                                    March 28
-                                </div>
-                            </div>
-                            <div class="col-md-11">
-                                <div class="amount">
-                                    0.005535
-                                    <span>
-                                        NEO TOKEN
-                                    </span>
-                                </div>
-                                <div class="description">
-                                    Ticket payment for transport A78 from the city of milan italy, to new Swiss port.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="transaction out">
-                        <div class="row">
-                            <div class="col-md-1">
-                                <div class="y">
-                                    2018
-                                </div>
-                                <div class="dd">
-                                    March 28
-                                </div>
-                            </div>
-                            <div class="col-md-11">
-                                <div class="amount">
-                                    0.005535
-                                    <span>
-                                        NEO TOKEN
-                                    </span>
-                                </div>
-                                <div class="description">
-                                    Ticket payment for transport A78 from the city of milan italy, to new Swiss port.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="col-md-12">
+                    {{ $transactions->links() }}
                 </div>
             </div>
+
+
 
         </div>
     </div>

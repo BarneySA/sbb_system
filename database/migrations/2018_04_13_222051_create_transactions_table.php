@@ -18,6 +18,8 @@ class CreateTransactionsTable extends Migration {
 			$table->string('currency_name', 12);
 			$table->string('amount', 100);
 			$table->string('txid', 300);
+			$table->integer('type')->default('0');
+			$table->text('localization_json')->nullable();
 			$table->string('description')->nullable();
 			$table->string('contry', 30)->nullable();
 			$table->string('city', 100)->nullable();
