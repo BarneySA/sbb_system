@@ -47,7 +47,7 @@
 
         </div>
     </div>
-    <div class="row mt-3">
+    <div class="row mt-3 transactions_list">
         <div class="col-md-12">
 
             <div class="row">
@@ -61,9 +61,18 @@
                 </div>
             </div>
 
+            <div class="errors__"></div>
+            <div class="row" v-if="loading==1">
+                <div class="col-md-12">
+                <div class="alert alert-info text-info">
+                    Loading...
+                </div>
+                </div>
+            </div>
+
 
             @php
-                $transactions = App\Transaction::where('user_id', \Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(10);
+                $transactions = App\Transaction::where('user_id', \Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(5);
             @endphp
             @foreach($transactions as $transaction)
                 <div class="row">
@@ -75,6 +84,7 @@
                                 $type='out';
                             }
                         @endphp
+
                         <div class="transaction {{$type}}">
                             <div class="row">
                                 <div class="col-md-1">
@@ -93,20 +103,44 @@
                                         {{$transaction->description}}
                                         <span style="display: block;">
                                             <b>TXID:</b> {{$transaction->txid}} 
-                                            <b>Product:</b> {{App\Product::find($transaction->product_id)->title}}
+                                            @if($transaction->type!=3)
+                                                <b>Product:</b> {{App\Product::find($transaction->product_id)->title}}
+                                            @endif
                                             <b>Transaction ID:</b> {{$transaction->id}}
                                         </span>
                                     </div>
                                 </div>
                             </div>
+
+                            @if($transaction->refund==0 && $transaction->type!=3)
+                            <hr>
+                            <div class="row" style="margin-bottom: -10px;">
+                                <div class="col-md-12">
+                                    <label style="display: block;margin-bottom: -8px;">
+                                        <u>
+                                            Available options for transactions: 
+                                        </u>
+                                    </label>
+                                    
+                                    @if($transaction->refund==0)
+                                        <button class="btn btn-link make_refund" style="color: #000; padding: 5px 0; font-weight: 500;" @click='refund("{{url('/cp/users/transactions/'.$transaction->id.'/refund')}}")'>
+                                            Make a refund
+                                        </button>
+                                    @endif
+
+                                </div>
+                            </div>
+                            @endif
+
                         </div>
+
 
                     </div>
                 </div>
             @endforeach
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 ppp">
                     {{ $transactions->links() }}
                 </div>
             </div>
@@ -125,5 +159,68 @@
 
         </div>
     </div>
+
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
+    <script>
+
+        $(document).ready(function(){
+            const app = new Vue({
+                el: '.transactions_list',
+                data: function () {
+                    var url = $('meta[name="site_url"]').attr('content');
+                    return {
+                        url: url,
+                        loading: 0
+                    }
+                },
+                
+                methods: {
+                    refund: function (url) {
+                        vm = this;
+                        vm.loading = 1;
+
+                        $.ajax({
+                            type: "post",
+                            url: url,
+                            data: {},
+                            dataType: "json",
+                            success: function (response) {
+                                vm.loading = 0;
+
+                                if (response.error==true) {
+                                    $('.errortrue').remove();
+                                    $('.errors__').after(`
+                                        <div class="alert alert-danger text-danger errortrue" style="margin-top: 10px;">
+                                            ${response.response}
+                                        </div>    
+                                    `); 
+                                } else {
+                                    $('.errortrue').remove();
+                                    $('.errors__').after(`
+                                        <div class="alert alert-success text-success errortrue" style="margin-top: 10px;">
+                                            ${response.response}
+                                        </div>    
+                                    `); 
+                                }
+                                
+                                if (response.refresh) {
+                                    if (response.refresh==true) {
+                                        setTimeout(() => {
+                                            window.location.reload();
+                                        }, 1500);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+
+
+
 
 @endsection

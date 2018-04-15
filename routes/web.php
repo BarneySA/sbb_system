@@ -40,11 +40,12 @@ Route::get('/qr-code/{text}', function ($text) {
 });
 
 Route::middleware(['auth'])->group(function () {
-
+    
     // Rutas para usuarios CP
     Route::prefix('/cp/users')->group(function () {
         Route::get('/', 'UserController@index');
         Route::get('/my_transactions', 'UserController@my_transactions');
+        Route::post('/transactions/{transaction_id}/refund', 'TransactionController@refund_for_client');
     });
 
     Route::prefix('/products')->group(function () {
@@ -57,6 +58,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas para administradores
     Route::prefix('/cp/admin')->middleware('admin_auth')->group(function () {
+        Route::get('/users', 'UserController@admin_users');
+        Route::get('/send/{currency}/{user_id}', 'UserController@send_currency');
+        Route::post('/send/{currency}/{user_id}', 'UserController@send_currency_post');
+        Route::get('/change_status_acc/{id}', 'UserController@change_status_acc');
         Route::get('/transactions', 'UserController@admin_transactions');
         Route::post('/transactions/{transaction_id}/refund', 'TransactionController@refund');
         

@@ -932,7 +932,7 @@ h1, h2, h3, h4, h5, h6 {
 	}
 }
 
-ul.pagination {
+.ppp ul.pagination {
     display: block;
 	width: 100%;
 	li {
@@ -946,4 +946,39 @@ ul.pagination {
 			color: $color_lig_1;
 		}
 	}
+}
+
+
+table.dataTable {
+    // background: #fff;
+    // padding: 10px;
+}
+
+.dataTables_wrapper.container-fluid.dt-bootstrap4.no-footer {
+    padding: 0;
+}
+
+.table td, .table th {
+    padding: 2px 7px;
+}
+
+
+table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_desc_disabled:before {
+    top: -1px;
+}
+
+table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
+    top: 1px;
+}
+
+table.table-bordered.dataTable tbody th, table.table-bordered.dataTable tbody td {
+    vertical-align: middle;
+}
+
+.btn-sm {
+	padding: 0px 9px !important;font-size: 12px;
+}
+
+select.form-control.form-control-sm {
+    padding: 0;
 }

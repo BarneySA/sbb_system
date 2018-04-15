@@ -37,7 +37,10 @@ class AuthController extends Controller
                 'response' => $validator->errors()
             ]);
         } else {
-            if(!Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+            if(!Auth::attempt(['email' => $request->input('email'), 
+            'password' => $request->input('password'),
+            'status' => 1
+            ])) {
                 return response()->json([
                     'error' => true,
                     'response' => 'We did not find a user with these credentials.'
@@ -95,7 +98,7 @@ class AuthController extends Controller
             return response()->json([
                 'error' => false,
                 'response' => 'Thank you for validating your login, you will be redirected to your account!',
-                'redirect' => url('/cp')
+                'redirect' => url('/cp/users')
             ]);
         }
 

@@ -104,19 +104,21 @@
                                         {{$transaction->description}}
                                         <span style="display: block;">
                                             <b>TXID:</b> {{$transaction->txid}} 
-                                            <b>Product:</b> {{App\Product::find($transaction->product_id)->title}}
-                                            @if($transaction->refund==1)
-                                                <p>
-                                                <span class="text-info">
-                                                    This transaction was reimbursed.
-                                                </span>
-                                                </p>
+                                            @if($transaction->type!=3)
+                                                <b>Product:</b> {{App\Product::find($transaction->product_id)->title}}
+                                                @if($transaction->refund==1)
+                                                    <p>
+                                                    <span class="text-info">
+                                                        This transaction was reimbursed.
+                                                    </span>
+                                                    </p>
+                                                @endif
                                             @endif
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            @if($transaction->refund==0)
+                            @if($transaction->refund==0 && $transaction->type!=3)
                             <hr>
                             <div class="row" style="margin-bottom: -10px;">
                                 <div class="col-md-12">
@@ -151,7 +153,7 @@
             @endforeach
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 ppp">
                     {{ $transactions->links() }}
                 </div>
             </div>
@@ -190,7 +192,7 @@
                     refund: function (url) {
                         vm = this;
                         vm.loading = 1;
-
+                        
                         $.ajax({
                             type: "post",
                             url: url,

@@ -30,8 +30,14 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public static function auth (){
-    	$user = Auth::user();
+    public static function auth ($id=null){
+        
+        if ($id==null) {
+            $user = Auth::user();
+        } else {
+            $user = User::find($id);
+        }
+
     	$user->balance = [
             'NEO' => 0,
             'GAS' => 0
