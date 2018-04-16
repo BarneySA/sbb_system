@@ -111,7 +111,7 @@ class TransactionController extends Controller
     $transfer = $client->get($url_neo)->getBody();
     $transfer = json_decode($transfer);
         
-    if (!isset($transfer->response)) {
+    if (!isset($transfer->response->txid)) {
       return response()->json([
           'error' => true,
           'response' => 'Something happened when transferring funds from your wallet, please verify that you have sufficient funds.',
@@ -145,6 +145,28 @@ class TransactionController extends Controller
           'response' => 'This transaction will apply a refund, soon the page is reloaded.',
           'refresh' => true
       ]);
+    }
+  }
+
+  public function thanks_for_your_answer($transaction_id, $response) 
+  {
+    $transaction = Transaction::find($transaction_id);
+    if ($transaction) {
+
+      if ($response=='yes') {
+        return redirect('/thanks_for_your_answer');
+      }
+      
+      // if ($transaction->user_id == Auth::user()->id && $transaction->refund == 0) {
+        if ($response=='not') {
+          $this->refund_for_client($transaction->id);
+          return redirect('/cp/users');
+        }        
+      // } 
+
+
+      return redirect('/');
+
     }
   }
 

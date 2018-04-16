@@ -87,6 +87,7 @@
                             dataType: "json",
                             success: function (response) {
                                 vm.loading = 0;
+                                console.log(response);
                                 
                                 if (response.error==true) {
                                     $('.errortrue').remove();

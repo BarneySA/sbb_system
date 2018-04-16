@@ -26,6 +26,7 @@ class UserController extends Controller
 
   public function index ()
   {       
+      return redirect('/cp/users/my_transactions');
       return view('my_account');
   }
 
@@ -42,6 +43,60 @@ class UserController extends Controller
   public function admin_users ()
   {       
       return view('users.admin.users.index');
+  }
+
+  public function register (Request $request)
+  {       
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users,email|max:60',
+            'password' => 'required|max:24',
+            'birthdate' => 'required|max:12',
+            'city' => 'required|max:30',
+            'name' => 'required|max:26',
+            'gender' => 'required|max:15'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => true,
+                'input' => true,
+                'response' => $validator->errors()
+            ]);
+        } else {
+
+            $client = new \GuzzleHttp\Client();
+            $url_neo = config('app.neo_bridge_url').'/wallet/create';
+            $wallet = $client->get($url_neo)->getBody();
+            $wallet = json_decode($wallet);
+
+            $address = $wallet->_address;
+            $publickey = $wallet->_privateKey;
+
+            $geolocation = $client->get('https://api.ipdata.co/')->getBody();
+            $geolocation = json_decode($geolocation);
+
+            $user = new User;
+            $user->name = $request->input('name');
+            $user->username = $request->input('name');
+            $user->password = \Hash::make($request->input('password'));
+            $user->birthdate = $request->input('birthdate');
+            $user->contry = $geolocation->country_code;
+            $user->email = $request->input('email');
+            $user->city = $geolocation->city;
+            $user->wallet_public_key = $publickey;
+            $user->wallet_address = $address;
+            $user->role = 0;
+            $user->status = 1;
+            $user->save();
+
+            Auth::loginUsingId($user->id, true);
+
+            return response()->json([
+                'error' => false,
+                'response' => 'Thank you for validating your login, you will be redirected to your account!',
+                'redirect' => url('/cp/users/my_transactions')
+            ]);
+        }
   }
 
   public function change_status_acc ($id)

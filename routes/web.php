@@ -35,11 +35,19 @@ Route::get('/thanks_for_the_registration', function () {
     return view('users.thanks_for_the_registration');
 });
 
+Route::get('/thanks_for_your_answer', function () {
+    return view('users.thanks_for_your_answer');
+});
+
+
 Route::get('/qr-code/{text}', function ($text) {
     return QRCode::text($text)->setSize(8)->png();
 });
 
+Route::post('/register', 'UserController@register');
+
 Route::middleware(['auth'])->group(function () {
+    Route::get('/thanks_for_your_answer/{transaction_id}/{response}', 'TransactionController@thanks_for_your_answer');
     
     // Rutas para usuarios CP
     Route::prefix('/cp/users')->group(function () {

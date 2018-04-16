@@ -56,7 +56,7 @@
             el: '.formulariologin',
             data: function () {
                 var url = $('meta[name="site_url"]').attr('content');
-                console.log(url);
+
                 return {
                     step: 1,
                     url: url,

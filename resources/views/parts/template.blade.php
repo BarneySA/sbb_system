@@ -25,12 +25,18 @@
                         <li>
                             <a href="{{url('/help')}}">Help</a>
                         </li>
-                        <li>
-                            <a href="{{url('/#register')}}">
-                                Register
-                            </a>
-                        </li>
-                        @if(\Auth::check())
+                        @if(!\Auth::check())
+                            <li>
+                                <a href="{{url('/#register')}}">
+                                    Register
+                                </a>
+                            </li>
+                        @else
+                            <li>
+                                <a href="{{url('/cp/users')}}">
+                                    My control panel
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{url('/logouth')}}">
                                     Logouth
@@ -125,8 +131,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="{{url('/js/sbb.js')}}"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.bootstrap4.min.css">
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
@@ -146,7 +153,15 @@
 
     <script>
         jQuery(document).ready(function($) {
-            // Menu mobile
+
+            $( ".date" ).datepicker({ 
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true,
+                dateFormat: 'yy-mm-dd',
+                yearRange: "-100:+0"
+            });
+
             $('.menu-mobile-burger .burger').on('click', function(){
                 $('.menu-mobile').fadeIn(200).css('display','table');
                 $('body').attr('style', 'overflow:hidden;');

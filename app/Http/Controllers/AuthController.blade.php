@@ -98,7 +98,7 @@ class AuthController extends Controller
             return response()->json([
                 'error' => false,
                 'response' => 'Thank you for validating your login, you will be redirected to your account!',
-                'redirect' => url('/cp/users')
+                'redirect' => url('/cp/users/my_transactions')
             ]);
         }
 

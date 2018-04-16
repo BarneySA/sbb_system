@@ -55,6 +55,18 @@
         </table>
     </p>
 
+    <hr>
+    <p>
+            
+        Good thing you bought our product, it is necessary for us to answer the following question to know what you think of the product:
+        <br><br>
+        Did you like our product?
+        <br>
+        <a href="{{url('/thanks_for_your_answer/'.$transaction->id.'/yes')}}">YES</a> <a href="{{url('/thanks_for_your_answer/'.$transaction->id.'/not')}}">NOT</a>
+    </p>
+
+    <hr>
+
     <br>
     <p>
         For more information we invite you to review this transaction in your control panel.

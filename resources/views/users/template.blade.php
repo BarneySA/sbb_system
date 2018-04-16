@@ -49,11 +49,6 @@
             <div class="col-md-12">
                 <ul class="nav nav-tabs" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link" href="{{url('/cp/users')}}">
-                        Profile
-                    </a>
-                  </li>
-                  <li class="nav-item">
                     <a class="nav-link" href="{{url('/cp/users/my_transactions')}}">
                         My transactions
                     </a>

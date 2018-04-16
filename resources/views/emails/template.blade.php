@@ -31,7 +31,7 @@
         width: 100%; }
         table td {
           font-family: sans-serif;
-          font-size: 14px;
+          font-size: 12px;
           vertical-align: top; }
 
       /* -------------------------------------
@@ -113,7 +113,7 @@
       ul,
       ol {
         font-family: sans-serif;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: normal;
         margin: 0;
         Margin-bottom: 15px; }
@@ -149,7 +149,7 @@
           color: #3498db;
           cursor: pointer;
           display: inline-block;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: bold;
           margin: 0;
           padding: 12px 25px;
@@ -271,7 +271,10 @@
         .btn-primary a:hover {
           background-color: #34495e !important;
           border-color: #34495e !important; } }
-
+          
+          * {
+            font-size: 12px !important;
+          }
     </style>
   </head>
   <body class="">

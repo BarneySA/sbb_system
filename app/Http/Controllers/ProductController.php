@@ -84,7 +84,7 @@ class ProductController extends Controller
     $transfer = $client->get($url_neo)->getBody();
     $transfer = json_decode($transfer);
 
-    if (!isset($transfer->response)) {
+    if (!isset($transfer->response->txid)) {
       return response()->json([
           'error' => true,
           'response' => 'Something happened when transferring funds from your wallet, please verify that you have sufficient funds.',
@@ -111,6 +111,8 @@ class ProductController extends Controller
           $m->from(config('mail.username'), 'Administration');
           $m->to($user->email)->subject('Thanks for your purchase!');
       });
+
+
 
       return response()->json([
           'error' => false,
