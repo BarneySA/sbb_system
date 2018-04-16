@@ -1,173 +1,180 @@
-@extends('users.template')
-@section('user_content')
+@extends('parts.admin_template')
+@section('content')
+    <!-- START PAGE HEADING -->
+    <div class="app-heading app-heading-bordered app-heading-page">
+        <div class="title">
+            <h1>My last transactions</h1>
+            <p>
+                Here we present your last transactions, you can see fund income as well as expenses made in your account.
+            </p>
+        </div>
+    </div>
+    <!-- END PAGE HEADING -->
+    
+    <!-- START PAGE CONTAINER -->
+    <div class="container">
+
     <div class="top_bar_transactions">
         <div class="row">
-            <div class="col-12 col-md-1">
-                <img src="{{App\Configuration::g()->qr}}" style="width: 100%;" alt="">
-            </div>
-            <div class="col-12 col-md-7">
-                <h3>
-                    System wallet
-                    <span class="wallet_number">
-                        {{App\Configuration::g()->wallet_address}}
-                    </span>
-                </h3>
-            </div>
-            <div class="col-6 col-md-2 text-center">
-                <h5>
-                    {{number_format(App\Configuration::g()->balance->NEO->balance, 10, ',', '.')}}
-                    <span style="font-size: 14px; margin-top: 5px; display: block; opacity: .7;">
-                        NEO
-                        <span style="display: block; margin-top: 0">
-                            Balance
-                        </span>
-                    </span>
-                </h5>
-
-            </div>
-            <div class="col-6 col-md-2 text-center">
-                <h5>
-                    {{number_format(App\Configuration::g()->balance->GAS->balance, 10, ',', '.')}}
-                    <span style="font-size: 14px; margin-top: 5px; display: block; opacity: .7;">
-                        GAS
-                        <span style="display: block; margin-top: 0">
-                            Balance
-                        </span>
-                    </span>
-                </h5>
+            <div class="col-md-6">
+                <div class="block">
+                    <!-- HEADING -->
+                    <div class="app-heading app-heading-small">                                        
+                        <div class="title">
+                            <h2>System wallet</h2>
+                            <p>{{App\Configuration::g()->wallet_address}}</p>
+                        </div>                 
+                    </div>
+                    <!-- END HEADING -->
+                    
+                    
+                    <div class="row">
+                        <div class="col-12 col-md-2">
+                            <img src="{{App\Configuration::g()->qr}}" style="width: 100%;" alt="">
+                        </div>
+                        <div class="col-6 col-md-10 text-left">
+                            <h5 style="margin-top: 2px;">
+                                {{number_format(App\Configuration::g()->balance->GAS->balance, 10, ',', '.')}}
+                                <span style="font-size: 14px; margin-top: 0px; display: block; opacity: .7;">
+                                    GAS
+                                    <span style="display: block; margin-top: 0">
+                                        Balance
+                                    </span>
+                                </span>
+                            </h5>
+    
+                        </div>
+    
+                    </div>
+                </div>
 
             </div>
         </div>
+
+
     </div>
-    <div class="row mt-3">
-        <div class="col-md-12">
-            <a href="" class="btn-sb">
-                Download transaction history
-            </a>
-        </div>
-    </div>
+
     <div class="row mt-3 transactions_list">
         <div class="col-md-12">
-
-            <div class="row">
-                <div class="col-md-12">
-                    <h3>
-                        My last transactions
-                    </h3>
-                    <p class="text-muted">
-                        Here we present your last transactions, you can see fund income as well as expenses made in your account.
-                    </p>
-                </div>
-            </div>
 
             <div class="errors__"></div>
             <div class="row" v-if="loading==1">
                 <div class="col-md-12">
-                <div class="alert alert-info text-info">
+                <div class="alert alert-info ">
                     Loading...
                 </div>
                 </div>
             </div>
 
             @php
-                $transactions = App\Transaction::where('user_id', \Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(10);
+                $transactions = App\Transaction::orderBy('created_at', 'DESC')->get();
             @endphp
-            @foreach($transactions as $transaction)
-                <div class="row">
-                    <div class="col-md-12 my_transactions">
 
-                        @php
-                            if($transaction->type==1) {
-                                $type='out';
-                            } else {
-                                $type='in';
-                            }
-                        @endphp
-                        <div class="transaction {{$type}}">
-                            <div class="row">
-                                <div class="col-md-1">
-                                    <div class="y">
-                                        {{$transaction->created_at->format('Y')}}
-                                    </div>
-                                    <div class="dd">
-                                        {{$transaction->created_at->format('m/d')}}
-                                    </div>
-                                    <div>
-                                        <b>ID:</b> {{$transaction->id}}
-                                    </div>
-                                </div>
-                                <div class="col-md-11">
-                                    <div class="amount">
-                                        {{number_format($transaction->amount, 10, ',', '.')}} {{$transaction->currency_name}}
-                                    </div>
-                                    <div class="description">
-                                        {{$transaction->description}}
-                                        <span style="display: block;">
-                                            <b>TXID:</b> {{$transaction->txid}} 
-                                            @if($transaction->type!=3)
-                                                <b>Product:</b> {{App\Product::find($transaction->product_id)->title}}
-                                                @if($transaction->refund==1)
-                                                    <p>
-                                                    <span class="text-info">
-                                                        This transaction was reimbursed.
-                                                    </span>
-                                                    </p>
-                                                @endif
-                                            @endif
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+            <table class="table_dt table table-hover table-striped table-bordered" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Opt</th>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Client</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                @foreach($transactions as $transaction)
+                    <tr>
+                        <td>
                             @if($transaction->refund==0 && $transaction->type!=3)
-                            <hr>
-                            <div class="row" style="margin-bottom: -10px;">
-                                <div class="col-md-12">
-                                    <label style="display: block;margin-bottom: -8px;">
-                                        <u>
-                                            Available options for transactions: 
-                                        </u>
-                                    </label>
-                                    
-                                    @if($transaction->refund==0)
-                                        <button class="btn btn-link make_refund" style="color: #000; padding: 5px 0; font-weight: 500;" @click='refund("{{url('/cp/admin/transactions/'.$transaction->id.'/refund')}}")'>
+                            <div class="dropdown">
+                                <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0px 10px;">
+                                    Actions
+                                </button>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                                    <li>
+                                        <a class="dropdown-item make_refund" @click='refund("{{url('/cp/admin/transactions/'.$transaction->id.'/refund')}}")'>
                                             Make a refund
-                                        </button>
-                                        /
-                                    @endif
-
-                                    @if($transaction->refund==0)
-                                        <a href="#" class="btn btn-link" style="color: #000; padding: 5px 0; font-weight: 500;">
-                                            Request service feedback
                                         </a>
-                                    @endif
+                                    </li>
 
+                                    
                                 </div>
                             </div>
+                            @else
+                                ---
                             @endif
-                        </div>
+                        </td>
+                        <td>
+                            {{ $transaction->id }}
+                        </td>
+                        <td>
+                            {{ $transaction->created_at->format('Y-m-d H:i:s') }}
+                        </td>
+                        <td>
+                            @if($transaction->user_id!=-1)
+                                {{ App\User::find($transaction->user_id)->name }}
+                            @else
+                                ---
+                            @endif
+                        </td>
+                        <td>
+                            {{number_format($transaction->amount, 10, ',', '.')}} {{$transaction->currency_name}}
+                        </td>
+                        <td>
 
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-xs btn-default" data-toggle="modal" data-target="#myModal_{{ $transaction->id }}">
+                            Open information
+                            </button>
 
-                    </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="myModal_{{ $transaction->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-body">
+                                    <p style="font-weight: bold;">Description: </p>
+                                    <p>
+                                        {{$transaction->description}}
+                                    </p>
+                                    
+                                    <p style="font-weight: bold;">TXID: </p>
+                                    <p>
+                                        {{$transaction->txid}} 
+                                    </p>
+                                    
+                                    <p style="display: block;">
+                                        @if($transaction->type!=3)
+                                            @if($transaction->refund==1)
+                                                <span class="text-warning">
+                                                    This transaction was reimbursed.
+                                                </span>
+                                            @endif
+                                        @endif
+                                    </p>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
 
-                </div>
-            @endforeach
+                        </td>
+                    </tr>
 
-            <div class="row">
-                <div class="col-md-12 ppp">
-                    {{ $transactions->links() }}
-                </div>
-            </div>
+                @endforeach
+                </tbody>
+            </table>
 
             @if(count($transactions)==0)
             <div class="row">
                 <div class="col-md-12">
-                <div class="alert alert-danger text-danger">
+                <div class="alert alert-danger ">
                     We do not find results.
                 </div>
                 </div>
             </div>
             @endif
-
 
         </div>
     </div>
@@ -204,14 +211,14 @@
                                 if (response.error==true) {
                                     $('.errortrue').remove();
                                     $('.errors__').after(`
-                                        <div class="alert alert-danger text-danger errortrue" style="margin-top: 10px;">
+                                        <div class="alert alert-danger  errortrue" style="margin-top: 10px;">
                                             ${response.response}
                                         </div>    
                                     `); 
                                 } else {
                                     $('.errortrue').remove();
                                     $('.errors__').after(`
-                                        <div class="alert alert-success text-success errortrue" style="margin-top: 10px;">
+                                        <div class="alert alert-success  errortrue" style="margin-top: 10px;">
                                             ${response.response}
                                         </div>    
                                     `); 
@@ -232,6 +239,6 @@
         });
     </script>
 
-
+    </div>
 
 @endsection

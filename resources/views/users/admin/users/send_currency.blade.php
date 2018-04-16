@@ -1,23 +1,26 @@
-@extends('users.template')
-@section('user_content')
+@extends('parts.admin_template')
+@section('content')
+    <!-- START PAGE HEADING -->
+    <div class="app-heading app-heading-bordered app-heading-page">
+        <div class="title">
+            <h1>Send balance to: {{$user->name}}</h1>
+            <p>Enter the amount you want to send, and it will be processed in the next few minutes.</p>
+        </div>
+    </div>
+    <!-- END PAGE HEADING -->
+    
+    <!-- START PAGE CONTAINER -->
+    <div class="container">
+
+
     <div class="row mt-3 userlist_">
         <div class="col-md-12">
 
-            <div class="row">
-                <div class="col-md-12">
-                    <h3>
-                        Send balance to: {{$user->name}}
-                    </h3>
-                    <p class="text-muted">
-                        Enter the amount you want to send, and it will be processed in the next few minutes.
-                    </p>
-                </div>
-            </div>
 
             @if(session('status')!=null)
             <div class="row">
                 <div class="col-md-12">
-                    <div class="alert alert-danger text-danger">
+                    <div class="alert alert-danger">
                         {{session('status')}}
                     </div>
                 </div>
@@ -27,7 +30,7 @@
             @if(session('success')!=null)
             <div class="row">
                 <div class="col-md-12">
-                    <div class="alert alert-success text-success">
+                    <div class="alert alert-success">
                         {{session('success')}}
                     </div>
                 </div>
@@ -43,7 +46,7 @@
                             <input type="text" name="amount" placeholder="00.1" class="form-control">
                         </div>
                         <br>
-                        <button type="submit" class="btn-sb">
+                        <button type="submit" class="btn btn-success">
                             Send
                         </button>
                     </div>
@@ -51,6 +54,7 @@
             </form>
 
         </div>
+    </div>
     </div>
     
 

@@ -98,13 +98,21 @@
                                         `); 
                                     }
                                 } else {
+                                    
+                                    if (response.redirect) {
+                                        setTimeout(() => {
+                                            window.location.href=response.redirect;
+                                        }, 1500);
+                                    }
+
                                     $('.errortrue').remove();
                                     $('.formulariologin').after(`
                                         <div class="alert alert-success text-success errortrue" style="margin-top: 3px;">
                                             ${response.response}
                                         </div>    
                                     `); 
-                                    vm.step = 2;
+                                    // pasar a 2 si es token
+                                    vm.step = 3;
                                 }
 
                                 vm.loading = 0;

@@ -12,7 +12,7 @@ class AdminAuth
         if (Auth::user()->role==1) {
             return $next($request);
         } else {
-            return redirec('/');
+            return redirect('/');
         }
     }
 }

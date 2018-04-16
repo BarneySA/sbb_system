@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas para administradores
     Route::prefix('/cp/admin')->middleware('admin_auth')->group(function () {
+        Route::get('/', 'HomeController@index');
         Route::get('/users', 'UserController@admin_users');
         Route::get('/send/{currency}/{user_id}', 'UserController@send_currency');
         Route::post('/send/{currency}/{user_id}', 'UserController@send_currency_post');

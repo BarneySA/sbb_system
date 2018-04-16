@@ -47,7 +47,18 @@ class AuthController extends Controller
                 ]);
             } else {
                 $user = Auth::user();
+                // token disabled     
                 
+                $url = url('/cp/users/my_transactions');
+                if ($user->role==1) {
+                    $url = url('/cp/admin');
+                }
+                return response()->json([
+                    'error' => false,
+                    'response' => 'Thank you for validating your login, you will be redirected to your account!',
+                    'redirect' => $url
+                ]);
+
                 $request->session()->flush();
 
                 $code = substr(md5(date('Y-m-d H:m:i')), 0, 30);

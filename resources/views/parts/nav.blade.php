@@ -3,11 +3,13 @@
         Home
     </a>
 </li>
+@if(!\Auth::check())
 <li>
     <a href="{{url('/#login')}}">
         Log in into your account
     </a>
 </li>
+@endif
 <li>
     <a href="{{url('/about_us')}}">
         About us
