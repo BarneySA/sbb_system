@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -21,7 +21,7 @@ use App\Tracking;
 use App\Transaction;
 use App\User;
 
-class ProductController extends Controller 
+class ProductController extends Controller
 {
 
   /**
@@ -52,18 +52,18 @@ class ProductController extends Controller
          if ($product->status==1) {
            $products->push($product);
          }
-       } 
+       }
       }
     }
     return view('products.category', ['category' => $category, 'products' => $products]);
   }
 
-  public function product ($slug) 
+  public function product ($slug)
   {
     $product = Product::where('slug', $slug)->get();
     return view('products.product', ['product' => $product]);
   }
-  
+
   public function register_transaction(Request $request)
   {
     $product = Product::find($request->input('product_id'));
@@ -106,7 +106,7 @@ class ProductController extends Controller
       $transaction->contry = $geolocation->country_code;
       $transaction->city = $geolocation->city;
       $transaction->save();
-  
+
       // Mail::send('emails.product_purchase', ['user' => $user, 'transaction' => $transaction, 'product' => $product], function ($m) use ($user) {
       //     $m->from(config('mail.username'), 'Administration');
       //     $m->to($user->email)->subject('Thanks for your purchase!');
@@ -150,6 +150,51 @@ class ProductController extends Controller
     ]);
   }
 
+  public function update(Request $request, $product_id)
+  {
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|unique:products,title,'.$product_id.'|max:80',
+        'amount' => 'required|max:12',
+        'description' => 'required|max:1200',
+        'billboard' => 'image|mimes:jpg,png,gif,jpeg|max:3048'
+    ]);
+
+    if ($validator->fails()) {
+      return redirect()
+        ->back()
+        ->withErrors($validator)
+        ->withInput();
+    } else {
+
+      if ($request->file('billboard')!=null) {
+        $image = $request->file('billboard');
+        $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path('/images/products');
+        $image->move($destinationPath, $input['imagename']);
+      }
+
+      $product = Product::find($product_id);
+      $product->title = $request->input('name');
+      $product->slug = str_slug($request->input('name'));
+      $product->description = $request->input('description');
+
+      if ($request->file('billboard')!=null) {
+        $product->billboard = $input['imagename'];
+      }
+
+      $product->amount = $request->input('amount');
+      $product->currency = 'GAS';
+      $product->save();
+
+      \DB::table('productsincategories')->insert([
+          'product_id'=>$product->id,
+          'category_id'=>$request->input('category_id')
+      ]);
+
+      return back()->with('success','The product was update successfully');
+    }
+  }
+
   public function destroy($product_id)
   {
     Product::find($product_id)->delete();
@@ -158,41 +203,41 @@ class ProductController extends Controller
 
   public function store(Request $request)
   {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:products,title|max:80',
-            'amount' => 'required|max:12',
-            'description' => 'required|max:1200',
-            'billboard' => 'required|image|mimes:jpg,png,gif,jpeg|max:3048'
-        ]);
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|unique:products,title|max:80',
+        'amount' => 'required|max:12',
+        'description' => 'required|max:1200',
+        'billboard' => 'required|image|mimes:jpg,png,gif,jpeg|max:3048'
+    ]);
 
-        if ($validator->fails()) {
-          return redirect()
-            ->back()
-            ->withErrors($validator)
-            ->withInput();  
-        } else {
+    if ($validator->fails()) {
+      return redirect()
+        ->back()
+        ->withErrors($validator)
+        ->withInput();
+    } else {
 
-          $image = $request->file('billboard');
-          $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
-          $destinationPath = public_path('/images/products');
-          $image->move($destinationPath, $input['imagename']);
+      $image = $request->file('billboard');
+      $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
+      $destinationPath = public_path('/images/products');
+      $image->move($destinationPath, $input['imagename']);
 
-          $product = new Product;
-          $product->title = $request->input('name');
-          $product->slug = str_slug($request->input('name'));
-          $product->description = $request->input('description');
-          $product->billboard = $input['imagename'];
-          $product->amount = $request->input('amount');
-          $product->currency = 'GAS';
-          $product->save();
+      $product = new Product;
+      $product->title = $request->input('name');
+      $product->slug = str_slug($request->input('name'));
+      $product->description = $request->input('description');
+      $product->billboard = $input['imagename'];
+      $product->amount = $request->input('amount');
+      $product->currency = 'GAS';
+      $product->save();
 
-          \DB::table('productsincategories')->insert([
-              'product_id'=>$product->id,
-              'category_id'=>$request->input('category_id')
-          ]);
+      \DB::table('productsincategories')->insert([
+          'product_id'=>$product->id,
+          'category_id'=>$request->input('category_id')
+      ]);
 
-          return back()->with('success','The product was created successfully');
-        }
+      return back()->with('success','The product was created successfully');
+    }
   }
 
 }
