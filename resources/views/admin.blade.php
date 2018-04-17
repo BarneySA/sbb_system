@@ -15,9 +15,49 @@
     <!-- START PAGE CONTAINER -->
     <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            Manage and control the SBB system
+        <div class="col-md-3">                                    
+            <div class="app-widget-tile app-widget-tile-primary app-widget-gradient">                                                                                    
+                <div class="line">
+                    <div class="title">Sales</div>
+                </div>
+                <div class="intval intval-lg">
+                    {{\App\Transaction::where('refund', 0)->count()}}
+                </div>
+                <div class="line">
+                    <div class="subtitle">Total sales</div>
+                </div>
+            </div>
         </div>
+
+        <div class="col-md-3">                                    
+            <div class="app-widget-tile app-widget-tile-primary app-widget-gradient">                                                                                    
+                <div class="line">
+                    <div class="title">Gains</div>
+                </div>
+                <div class="intval intval-lg">
+                    {{number_format(collect(\App\Transaction::where('refund', 0)->get())->sum('amount'), 10, ',', '.')}}
+                </div>
+                <div class="line">
+                    <div class="subtitle">Gains in GAS</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">                                    
+            <div class="app-widget-tile app-widget-tile-primary app-widget-gradient">                                                                                    
+                <div class="line">
+                    <div class="title">Total refunds made</div>
+                </div>
+                <div class="intval intval-lg">
+                    {{\App\Transaction::where('refund', 1)->count()}}
+                </div>
+                <div class="line">
+                    <div class="subtitle">Refunds made</div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
         
         
