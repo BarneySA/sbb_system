@@ -24,7 +24,7 @@
             <div class="app-container">
                 <!-- START SIDEBAR -->
                 <div class="app-sidebar app-navigation  app-navigation-fixed app-navigation-style-default dir-left" data-type="close-other">
-                    <a href="{{ url('/cp/admin') }}" class="app-navigation-logo"></a>
+                    <a href="{{ url('/cp/users') }}" class="app-navigation-logo"></a>
                     <nav>
                         <ul>                            
                             <li>
@@ -40,7 +40,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{{url('/cp/admin/products')}}">
                                     <span class="nav-icon-hexa">Pr</span>
                                     Products
                                 </a>

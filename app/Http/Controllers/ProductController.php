@@ -31,7 +31,7 @@ class ProductController extends Controller
    */
   public function index()
   {
-    
+    return view('products.admin.index');
   }
 
   public function categories()
@@ -121,6 +121,78 @@ class ProductController extends Controller
       ]);
     }
 
+  }
+
+  public function change_status_p($Product_id)
+  {
+    $Product = Product::find($Product_id);
+    if ($Product) {
+      if ($Product->status==0) {
+        $Product->status = 1;
+      } else {
+        $Product->status = 0;
+      }
+      $Product->save();
+    }
+    return redirect()->back();
+  }
+
+  public function create()
+  {
+    return view('products.admin.create');
+  }
+
+  public function edit($product_id)
+  {
+    $product = Product::find($product_id);
+    return view('products.admin.edit', [
+      'product' => $product
+    ]);
+  }
+
+  public function destroy($product_id)
+  {
+    Product::find($product_id)->delete();
+    return redirect()->back();
+  }
+
+  public function store(Request $request)
+  {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:products,title|max:80',
+            'amount' => 'required|max:12',
+            'description' => 'required|max:1200',
+            'billboard' => 'required|image|mimes:jpg,png,gif,jpeg|max:3048'
+        ]);
+
+        if ($validator->fails()) {
+          return redirect()
+            ->back()
+            ->withErrors($validator)
+            ->withInput();  
+        } else {
+
+          $image = $request->file('billboard');
+          $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
+          $destinationPath = public_path('/images/products');
+          $image->move($destinationPath, $input['imagename']);
+
+          $product = new Product;
+          $product->title = $request->input('name');
+          $product->slug = str_slug($request->input('name'));
+          $product->description = $request->input('description');
+          $product->billboard = $input['imagename'];
+          $product->amount = $request->input('amount');
+          $product->currency = 'GAS';
+          $product->save();
+
+          \DB::table('productsincategories')->insert([
+              'product_id'=>$product->id,
+              'category_id'=>$request->input('category_id')
+          ]);
+
+          return back()->with('success','The product was created successfully');
+        }
   }
 
 }

@@ -3,10 +3,10 @@
     <!-- START PAGE HEADING -->
     <div class="app-heading app-heading-bordered app-heading-page">
         <div class="title">
-            <h1>Categories
+            <h1>Products
             </h1>
             <p>
-                Management and control of system categories
+                List of system products
             </p>
         </div>
     </div>
@@ -17,24 +17,10 @@
 
     <div class="row">
         <div class="col-md-12">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Create new category</button>
+            <a href="{{url('/cp/admin/products/create')}}" class="btn btn-primary">
+                Create new product
+            </a>
 
-            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-                <div class="modal-dialog modal-sm" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <form action="" method="post">
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" class="form-control" name="name" placeholder="Name">
-                            </div>
-                            <br>
-                            <button class="btn btn-success" type="submit">Save</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <hr>
         </div>
     </div>
@@ -49,11 +35,12 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Status</th>
+                        <th>Amount</th>
                         <th>Transactions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach(\App\Category::all() as $category)
+                    @foreach(\App\Product::all() as $product)
                         <tr>
                             <td>
                                 <div class="dropdown">
@@ -62,33 +49,38 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         
-                                        @if(\App\Transaction::where('category_id', $category->id)->count() == 0)
+                                        @if(\App\Transaction::where('product_id', $product->id)->count() == 0)
                                             <li>
-                                                <a class="dropdown-item" href="{{url('/cp/admin/categories/destroy/'.$category->id)}}">Remove</a>
+                                                <a class="dropdown-item" href="{{url('/cp/admin/products/destroy/'.$product->id)}}">Remove</a>
                                             </li>
                                         @endif
                                             
-                                        @if($category->status == 0)
+                                        @if($product->status == 0)
                                             <li>
-                                                <a class="dropdown-item" href="{{url('/cp/admin/categories/change_status/'.$category->id)}}">Enable</a>
+                                                <a class="dropdown-item" href="{{url('/cp/admin/products/change_status_p/'.$product->id)}}">Enable</a>
                                             </li>
                                         @else
                                             <li>
-                                                <a class="dropdown-item" href="{{url('/cp/admin/categories/change_status/'.$category->id)}}">Disabled</a>
+                                                <a class="dropdown-item" href="{{url('/cp/admin/products/change_status_p/'.$product->id)}}">Disabled</a>
                                             </li>
                                         @endif
+
+                                            <li>
+                                                <a class="dropdown-item" href="{{url('/cp/admin/products/edit/'.$product->id)}}">Edit</a>
+                                            </li>
                                         
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                {{ $category->id }}
+                                {{ $product->id }}
                             </td>
                             <td>
-                                {{ $category->name }}
+                                {{ $product->title }}
                             </td>
+                            
                             <td>
-                                @if($category->status == 0)
+                                @if($product->status == 0)
                                     <div class="label label-danger">
                                         Inactive
                                     </div>
@@ -99,7 +91,11 @@
                                 @endif
                             </td>
                             <td>
-                                {{ \App\Transaction::where('category_id', $category->id)->count() }}
+                                {{ number_format($product->amount, 10, ',', '.') }}
+                                {{ $product->currency }}
+                            </td>
+                            <td>
+                                {{ \App\Transaction::where('product_id', $product->id)->count() }}
                             </td>
                         </tr>
                     @endforeach

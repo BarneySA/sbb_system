@@ -75,7 +75,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/transactions', 'UserController@admin_transactions');
         Route::post('/transactions/{transaction_id}/refund', 'TransactionController@refund');
         Route::get('/transactions/{transaction_id}/poll_change_status', 'TransactionController@poll_change_status');
-        
+
+        Route::prefix('/products')->group(function () {
+            Route::get('/', 'ProductController@index');
+            Route::get('/edit/{product_id}', 'ProductController@edit');
+            Route::get('/destroy/{product_id}', 'ProductController@destroy');
+            Route::get('/change_status_p/{product_id}', 'ProductController@change_status_p');
+            Route::post('/edit/{product_id}', 'ProductController@update');
+            Route::get('/create', 'ProductController@create');
+            Route::post('/create', 'ProductController@store');
+        });
+
         Route::prefix('/categories')->group(function () {
             Route::get('/', 'CategoryController@index');
             Route::post('/', 'CategoryController@store');
