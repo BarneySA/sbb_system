@@ -78,6 +78,9 @@ Route::middleware(['auth'])->group(function () {
         
         Route::prefix('/categories')->group(function () {
             Route::get('/', 'CategoryController@index');
+            Route::post('/', 'CategoryController@store');
+            Route::get('/destroy/{category_id}', 'CategoryController@destroy');
+            Route::get('/change_status/{category_id}', 'CategoryController@change_status');
             
             
         });
