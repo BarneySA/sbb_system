@@ -58,6 +58,11 @@
                         Products
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{url('/cp/users/my_shopping')}}">
+                        My purchased products
+                    </a>
+                  </li>
                 </ul>
             </div>
         </div>

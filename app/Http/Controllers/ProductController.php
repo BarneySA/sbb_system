@@ -107,10 +107,10 @@ class ProductController extends Controller
       $transaction->city = $geolocation->city;
       $transaction->save();
   
-      Mail::send('emails.product_purchase', ['user' => $user, 'transaction' => $transaction, 'product' => $product], function ($m) use ($user) {
-          $m->from(config('mail.username'), 'Administration');
-          $m->to($user->email)->subject('Thanks for your purchase!');
-      });
+      // Mail::send('emails.product_purchase', ['user' => $user, 'transaction' => $transaction, 'product' => $product], function ($m) use ($user) {
+      //     $m->from(config('mail.username'), 'Administration');
+      //     $m->to($user->email)->subject('Thanks for your purchase!');
+      // });
 
 
 

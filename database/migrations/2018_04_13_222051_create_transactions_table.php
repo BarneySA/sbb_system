@@ -24,6 +24,8 @@ class CreateTransactionsTable extends Migration {
 			$table->string('description')->nullable();
 			$table->string('contry', 30)->nullable();
 			$table->string('city', 100)->nullable();
+			$table->string('poll')->nullable();
+			$table->integer('poll_active')->default('0');
 		});
 	}
 

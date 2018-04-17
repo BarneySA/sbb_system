@@ -73,10 +73,10 @@ class AuthController extends Controller
                 $SecurityToken->identifier = 'LOGIN';
                 $SecurityToken->save();
 
-                Mail::send('emails.send_token', ['user' => $user, 'code' => $code], function ($m) use ($user) {
-                    $m->from(config('mail.username'), 'Administration');
-                    $m->to($user->email)->subject('Verification code to authorize login');
-                });
+                // Mail::send('emails.send_token', ['user' => $user, 'code' => $code], function ($m) use ($user) {
+                //     $m->from(config('mail.username'), 'Administration');
+                //     $m->to($user->email)->subject('Verification code to authorize login');
+                // });
 
                 return response()->json([
                     'error' => false,

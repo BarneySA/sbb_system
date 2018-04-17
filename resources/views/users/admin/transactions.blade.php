@@ -86,26 +86,40 @@
                 @foreach($transactions as $transaction)
                     <tr>
                         <td>
-                            @if($transaction->refund==0 && $transaction->type!=3)
-                            <div class="dropdown">
-                                <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0px 10px;">
-                                    Actions
-                                </button>
+                        <div class="dropdown">
+                            <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0px 10px;">
+                                Actions
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            
+                                @if($transaction->refund==0 && $transaction->type!=3)
+                                <li>
+                                    <a class="dropdown-item make_refund" style="cursor:pointer;" @click='refund("{{url('/cp/admin/transactions/'.$transaction->id.'/refund')}}")'>
+                                        Make a refund
+                                    </a>
+                                </li>
+                                @else
 
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                @endif
 
-                                    <li>
-                                        <a class="dropdown-item make_refund" @click='refund("{{url('/cp/admin/transactions/'.$transaction->id.'/refund')}}")'>
-                                            Make a refund
-                                        </a>
-                                    </li>
+                                @if($transaction->poll==null && $transaction->refund==0 && $transaction->type!=3) 
+                                    @if($transaction->poll_active==0)
+                                        <li>
+                                            <a class="dropdown-item" href="{{url('/cp/admin/transactions/'.$transaction->id.'/poll_change_status')}}">Enable survey</a>
+                                        </li>
+                                    @else
+                                        <li>
+                                            <a class="dropdown-item" href="{{url('/cp/admin/transactions/'.$transaction->id.'/poll_change_status')}}">Disable survey</a>
+                                        </li>
+                                    @endif
+                                @endif
 
-                                    
-                                </div>
+                                <li>
+                                    <a class="dropdown-item" href="{{url('/cp/admin/send/GAS/'.$transaction->user_id)}}">Send funds to this user</a>
+                                </li>
+
                             </div>
-                            @else
-                                ---
-                            @endif
+                        </div>
                         </td>
                         <td>
                             {{ $transaction->id }}
@@ -199,6 +213,7 @@
                     refund: function (url) {
                         vm = this;
                         vm.loading = 1;
+                        $('.errortrue').remove();
                         
                         $.ajax({
                             type: "post",
@@ -207,6 +222,7 @@
                             dataType: "json",
                             success: function (response) {
                                 vm.loading = 0;
+                                console.log(response);
 
                                 if (response.error==true) {
                                     $('.errortrue').remove();

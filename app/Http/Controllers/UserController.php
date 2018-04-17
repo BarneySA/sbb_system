@@ -35,6 +35,11 @@ class UserController extends Controller
       return view('users.my_transactions');
   }
 
+  public function my_shopping ()
+  {       
+      return view('users.my_purchased_products');
+  }
+
   public function admin_transactions() 
   {
     return view('users.admin.transactions');

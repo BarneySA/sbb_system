@@ -49,7 +49,7 @@ class TransactionController extends Controller
     $transfer = $client->get($url_neo)->getBody();
     $transfer = json_decode($transfer);
         
-    if (!isset($transfer->response)) {
+    if (!isset($transfer->response->txid)) {
       return response()->json([
           'error' => true,
           'response' => 'Something happened when transferring funds from your wallet, please verify that you have sufficient funds.',
@@ -73,10 +73,10 @@ class TransactionController extends Controller
       $transaction->city = $geolocation->city;
       $transaction->save();
 
-      Mail::send('emails.admin_refund', ['user' => $user, 'transaction' => $transaction, 'product' => $product], function ($m) use ($user) {
-          $m->from(config('mail.username'), 'Administration');
-          $m->to($user->email)->subject('A refund is charged to your account');
-      });
+      // Mail::send('emails.admin_refund', ['user' => $user, 'transaction' => $transaction, 'product' => $product], function ($m) use ($user) {
+      //     $m->from(config('mail.username'), 'Administration');
+      //     $m->to($user->email)->subject('A refund is charged to your account');
+      // });
 
       return response()->json([
           'error' => false,
@@ -135,10 +135,10 @@ class TransactionController extends Controller
       $transaction->city = $geolocation->city;
       $transaction->save();
 
-      Mail::send('emails.admin_refund', ['user' => $user, 'transaction' => $transaction, 'product' => $product], function ($m) use ($user) {
-          $m->from(config('mail.username'), 'Administration');
-          $m->to($user->email)->subject('A refund is charged to your account');
-      });
+      // Mail::send('emails.admin_refund', ['user' => $user, 'transaction' => $transaction, 'product' => $product], function ($m) use ($user) {
+      //     $m->from(config('mail.username'), 'Administration');
+      //     $m->to($user->email)->subject('A refund is charged to your account');
+      // });
 
       return response()->json([
           'error' => false,
@@ -154,15 +154,22 @@ class TransactionController extends Controller
     if ($transaction) {
 
       if ($response=='yes') {
+        $transaction->poll = 1;
+        $transaction->poll_active = 0;
+        $transaction->save();
         return redirect('/thanks_for_your_answer');
       }
       
-      // if ($transaction->user_id == Auth::user()->id && $transaction->refund == 0) {
+      if ($transaction->user_id == Auth::user()->id && $transaction->refund == 0) {
         if ($response=='not') {
           $this->refund_for_client($transaction->id);
+          $transaction->poll = 0;
+          $transaction->poll_active = 0;
+          $transaction->save();
           return redirect('/cp/users');
         }        
-      // } 
+      } 
+
 
 
       return redirect('/');
@@ -175,9 +182,19 @@ class TransactionController extends Controller
    *
    * @return Response
    */
-  public function index()
+  public function poll_change_status($transaction_id)
   {
-    
+    $transaction = Transaction::find($transaction_id);
+    if ($transaction) {
+      if ($transaction->poll_active==0) {
+        $transaction->poll_active = 1;
+      } else {
+        $transaction->poll_active = 0;
+      }
+      $transaction->save();
+    }
+
+    return redirect()->back();
   }
 
   /**

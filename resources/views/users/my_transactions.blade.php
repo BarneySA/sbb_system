@@ -70,6 +70,14 @@
                 </div>
             </div>
 
+            @php
+            $pollspending = App\Transaction::where('user_id', \Auth::user()->id)->where('poll_active', 1)->where('poll', null)->count();
+            @endphp
+            @if($pollspending>=1)
+                <div class="alert alert-info text-info">
+                    You have <strong><u>{{ $pollspending }}</u></strong> quantity of products, with active survey and without responding! Help us improve by responding to surveys.
+                </div>
+            @endif
 
             @php
                 $transactions = App\Transaction::where('user_id', \Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(5);
@@ -87,14 +95,6 @@
 
                         <div class="transaction {{$type}}">
                             <div class="row">
-                                <div class="col-md-1">
-                                    <div class="y">
-                                        {{$transaction->created_at->format('Y')}}
-                                    </div>
-                                    <div class="dd">
-                                        {{$transaction->created_at->format('m/d')}}
-                                    </div>
-                                </div>
                                 <div class="col-md-11">
                                     <div class="amount">
                                         {{number_format($transaction->amount, 10, ',', '.')}} {{$transaction->currency_name}}
@@ -108,6 +108,7 @@
                                             @endif
                                             <b>Transaction ID:</b> {{$transaction->id}}
                                         </span>
+                                        <strong>Date:</strong> {{$transaction->created_at->format('y-m-d h:i:s')}}
                                     </div>
                                 </div>
                             </div>
@@ -130,6 +131,17 @@
 
                                 </div>
                             </div>
+                            @endif
+                            
+                            @if($transaction->poll_active == 1)
+                            <p>
+                                <br>
+                                <strong>Answer the following survey</strong>
+                                <br>
+                                Did you like our product?
+                                <br>
+                                <a href="{{url('/thanks_for_your_answer/'.$transaction->id.'/yes')}}">YES</a> <a href="{{url('/thanks_for_your_answer/'.$transaction->id.'/not')}}">NOT</a>
+                            </p>
                             @endif
 
                         </div>

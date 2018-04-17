@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('/cp/users')->group(function () {
         Route::get('/', 'UserController@index');
         Route::get('/my_transactions', 'UserController@my_transactions');
+        Route::get('/my_shopping', 'UserController@my_shopping');
         Route::post('/transactions/{transaction_id}/refund', 'TransactionController@refund_for_client');
     });
 
@@ -73,7 +74,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/change_status_acc/{id}', 'UserController@change_status_acc');
         Route::get('/transactions', 'UserController@admin_transactions');
         Route::post('/transactions/{transaction_id}/refund', 'TransactionController@refund');
+        Route::get('/transactions/{transaction_id}/poll_change_status', 'TransactionController@poll_change_status');
         
+        Route::prefix('/categories')->group(function () {
+            Route::get('/', 'CategoryController@index');
+            
+            
+        });
     });
 });
 

@@ -34,15 +34,15 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{{url('/cp/admin/categories')}}">
                                     <span class="nav-icon-hexa">Ca</span>
-                                    Category
+                                    Categories
                                 </a>
                             </li>
                             <li>
                                 <a href="#">
                                     <span class="nav-icon-hexa">Pr</span>
-                                    Product
+                                    Products
                                 </a>
                             </li>
                             <li>
@@ -163,7 +163,6 @@
         <script>
             $(document).ready(function(){
                 $('.table_dt').DataTable({
-                    "order": false,
                     "responsive": true
                 });
                 $( ".date" ).datepicker({ 

@@ -65,28 +65,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>City</label>
-                    <select name="city" class="form-control" >
-                        <option>Zürich</option>
-                        <option>Geneva</option>
-                        <option>Basel</option>
-                        <option>Bern</option>
-                        <option>Lausanne</option>
-                        <option>Winterthur</option>
-                        <option>Lucerne</option>
-                        <option>St. Gallen</option>
-                        <option>Lugano</option>
-                        <option>Biel/Bienne</option>
-                        <option>Thun</option>
-                        <option>Köniz </option>
-                        <option>La Chaux-de-Fonds</option>
-                        <option>Fribourg</option>
-                        <option>Schaffhausen</option>
-                        <option>Vernier</option>
-                        <option>Chur</option>
-                        <option>Sion</option>
-                        <option>Uster</option>
-                        <option>Neuchâtel</option>
-                    </select>
+                    <input type="text" name="city" class="form-control">
                 </div>
                 <p class="text-danger" style="margin-top: -10px; opacity: 1;">
                     {{ $errors->first('city') }}
