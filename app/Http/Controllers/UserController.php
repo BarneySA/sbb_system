@@ -172,6 +172,56 @@ class UserController extends Controller
     }
     
   }
+
+  public function send_reward_user ($user_id, Request $request) 
+  {
+    $user = User::find($user_id);
+    $configuration = Configuration::g();
+    $amount = 0.00005;
+
+    if ($configuration->balance->GAS->balance < $amount) { 
+        $request->session()->flash('status', 'Your balance does not have enough funds to process this transaction, please check the balance of the master wallet. The maximum you can send is: SBB - Token '.$configuration->balance->GAS->balance);
+        return redirect()->back();
+    } else {
+        $url_neo = config('app.neo_bridge_url').'/wallet/transfer/'.$configuration->wallet_address.'/'.$configuration->wallet_public_key.'/'.$user->wallet_address.'/'.$amount.'/GAS';
+        
+        $client = new \GuzzleHttp\Client();
+        $geolocation = $client->get('https://api.ipdata.co/')->getBody();
+        $geolocation = json_decode($geolocation);
+
+        $transfer = $client->get($url_neo)->getBody();
+        $transfer = json_decode($transfer);
+
+        if ($transfer->response->result==false) {
+            $request->session()->flash('status', 'There was a problem transferring funds, please check and try again in a few minutes.');
+        } else {
+            $transaction = new Transaction;
+            $transaction->category_id = '-1';
+            $transaction->product_id = '-1';
+            $transaction->user_id = $user->id;
+            $transaction->from = $configuration->wallet_address;
+            $transaction->for = $user->wallet_address;
+            $transaction->localization_json = json_encode($geolocation);
+            $transaction->currency_name = 'GAS';
+            $transaction->type = 3;
+            $transaction->refund = 0;
+            $transaction->amount = $amount;
+            $transaction->txid = $transfer->response->txid;
+            $transaction->description = 'The administrator sent you a gift for '.number_format($amount, 10, ',', '.').' SBB - Token ['.$user->id.'] '.$user->name.' ';
+            $transaction->contry = $geolocation->country_code;
+            $transaction->city = $geolocation->city;
+            $transaction->save();
+    
+            $request->session()->flash( 'success', 'Successful tide funds were sent. You can see the transaction information in the transaction module.');
+            return redirect()->back();
+        }
+        
+        $request->session()->flash('status', 'There was a problem transferring funds, please check and try again in a few minutes.');
+        return redirect()->back();
+
+    }
+    
+  }
   
 }
 

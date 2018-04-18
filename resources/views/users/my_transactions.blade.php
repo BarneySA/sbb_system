@@ -5,7 +5,7 @@
             <div class="col-12 col-md-1">
                 <img src="{{App\User::auth()->qr}}" style="width: 100%;" alt="">
             </div>
-            <div class="col-12 col-md-7">
+            <div class="col-12 col-md-9">
                 <h3>
                     My wallet 
                     <span class="wallet_number">
@@ -13,23 +13,12 @@
                     </span>
                 </h3>
             </div>
-            <div class="col-6 col-md-2 text-center">
-                <h5>
-                    {{number_format(App\User::auth()->balance->NEO->balance, 10, ',', '.')}}
-                    <span style="font-size: 14px; margin-top: 5px; display: block; opacity: .7;">
-                        NEO
-                        <span style="display: block; margin-top: 0">
-                            Balance
-                        </span>
-                    </span>
-                </h5>
 
-            </div>
             <div class="col-6 col-md-2 text-center">
                 <h5>
                     {{number_format(App\User::auth()->balance->GAS->balance, 10, ',', '.')}}
                     <span style="font-size: 14px; margin-top: 5px; display: block; opacity: .7;">
-                        GAS
+                        SBB - Token
                         <span style="display: block; margin-top: 0">
                             Balance
                         </span>
@@ -97,7 +86,7 @@
                             <div class="row">
                                 <div class="col-md-11">
                                     <div class="amount">
-                                        {{number_format($transaction->amount, 10, ',', '.')}} {{$transaction->currency_name}}
+                                        {{number_format($transaction->amount, 10, ',', '.')}} SBB - Token
                                     </div>
                                     <div class="description">
                                         {{$transaction->description}}
@@ -200,7 +189,9 @@
                             dataType: "json",
                             success: function (response) {
                                 vm.loading = 0;
-
+                                console.log(response);
+                                $('.errortrue').remove();
+                                
                                 if (response.error==true) {
                                     $('.errortrue').remove();
                                     $('.errors__').after(`

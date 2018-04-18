@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/my_transactions', 'UserController@my_transactions');
         Route::get('/my_shopping', 'UserController@my_shopping');
         Route::post('/transactions/{transaction_id}/refund', 'TransactionController@refund_for_client');
+        // Route::get('/vaciar_cuenta', 'TransactionController@vaciar_cuenta');
     });
 
     Route::prefix('/products')->group(function () {
@@ -71,6 +72,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users', 'UserController@admin_users');
         Route::get('/send/{currency}/{user_id}', 'UserController@send_currency');
         Route::post('/send/{currency}/{user_id}', 'UserController@send_currency_post');
+        Route::get('/send_reward/{user_id}', 'UserController@send_reward_user');
         Route::get('/change_status_acc/{id}', 'UserController@change_status_acc');
         Route::get('/transactions', 'UserController@admin_transactions');
         Route::post('/transactions/{transaction_id}/refund', 'TransactionController@refund');

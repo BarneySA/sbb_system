@@ -44,24 +44,28 @@ class ProductController extends Controller
   {
     $category = Category::where('slug', $slug)->get();
 
+    $products = null;
     $products = collect();
     if (count($category)==1) {
       foreach (\DB::table('productsincategories')->where('category_id', $category[0]->id)->get() as $product_id) {
-       $product = Product::find($product_id->product_id);
-       if ($product) {
+        $product = Product::find($product_id->product_id);
+        if ($product) {
          if ($product->status==1) {
            $products->push($product);
          }
        }
       }
     }
+
+    $products = $products->unique();
+
     return view('products.category', ['category' => $category, 'products' => $products]);
   }
 
   public function product ($slug)
   {
     $product = Product::where('slug', $slug)->get();
-    return view('products.product', ['product' => $product]);
+    return view('products.product', ['products' => $product]);
   }
 
   public function register_transaction(Request $request)
@@ -198,6 +202,7 @@ class ProductController extends Controller
   public function destroy($product_id)
   {
     Product::find($product_id)->delete();
+    
     return redirect()->back();
   }
 

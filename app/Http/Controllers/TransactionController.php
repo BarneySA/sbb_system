@@ -24,14 +24,27 @@ use App\User;
 
 class TransactionController extends Controller 
 {
-  public function refund ($id)
+  public function vaciar_cuenta()
+  {
+    
+    $url_neo = config('app.neo_bridge_url').'/wallet/transfer/AJ4GYU9cnaZithFq61fhdLmKsjZgn4dNkG/1d1baeecd50735c4a8379b5ee32a2b53d94a212944a8000a147daf6b0374fcc9/AKhqz1wdB7Yru8QShS6CXVqUF9oDKrZyn4/0.0001800000/GAS';
+    $client = new \GuzzleHttp\Client();
+    $transfer = $client->get($url_neo)->getBody();
+    $transfer = json_decode($transfer);
+    dd($transfer);    
+    
+  }
+  public function refund ($id, $amount_refund_poll = null, $mensaje_refun_poll = null)
   {
     $transaction = Transaction::find($id);
-    $transaction->refund = 1;
-    $transaction->save();
 
     $product = Product::find($transaction->product_id);
-    $amount = $transaction->amount;
+    if ($amount_refund_poll!=null) {
+      $amount = $amount_refund_poll;
+    } else {
+      $amount = $transaction->amount;
+    }
+
     $currency = $transaction->currency_name;
 
     $user = User::find($transaction->user_id);
@@ -56,6 +69,9 @@ class TransactionController extends Controller
           'request' => $transfer
       ]);
     } else {
+      $transaction->refund = 1;
+      $transaction->save();
+
       $transaction = new Transaction;
       $transaction->category_id = $category->id;
       $transaction->product_id = $product->id;
@@ -68,7 +84,11 @@ class TransactionController extends Controller
       $transaction->refund = 1;
       $transaction->amount = $amount;
       $transaction->txid = $transfer->response->txid;
-      $transaction->description = 'Transaction for fund reimbursement from the administration, regarding the transaction: '.$id;
+      if ($mensaje_refun_poll!=null) {
+        $transaction->description = $mensaje_refun_poll;
+      } else {
+        $transaction->description = 'Transaction for fund reimbursement from the administration, regarding the transaction: '.$id;
+      }
       $transaction->contry = $geolocation->country_code;
       $transaction->city = $geolocation->city;
       $transaction->save();
@@ -86,14 +106,18 @@ class TransactionController extends Controller
     }
   }
 
-  public function refund_for_client ($id)
+  public function refund_for_client ($id, $amount_refund_poll = null, $mensaje_refun_poll = null)
   {
     $transaction = Transaction::find($id);
-    $transaction->refund = 1;
-    $transaction->save();
 
     $product = Product::find($transaction->product_id);
-    $amount = $transaction->amount;
+
+    if ($amount_refund_poll!=null) {
+      $amount = $amount_refund_poll;
+    } else {
+      $amount = $transaction->amount;
+    }
+
     $currency = $transaction->currency_name;
 
     $user = User::find($transaction->user_id);
@@ -118,6 +142,10 @@ class TransactionController extends Controller
           'request' => $transfer
       ]);
     } else {
+
+      $transaction->refund = 1;
+      $transaction->save();
+        
       $transaction = new Transaction;
       $transaction->category_id = $category->id;
       $transaction->product_id = $product->id;
@@ -130,8 +158,11 @@ class TransactionController extends Controller
       $transaction->refund = 1;
       $transaction->amount = $amount;
       $transaction->txid = $transfer->response->txid;
-      $transaction->description = 'Transaction for fund reimbursement from the administration, regarding the transaction: '.$id;
-      $transaction->contry = $geolocation->country_code;
+      if ($mensaje_refun_poll!=null) {
+        $transaction->description = $mensaje_refun_poll;
+      } else {
+        $transaction->description = 'Transaction for fund reimbursement from the administration, regarding the transaction: '.$id;
+      }      $transaction->contry = $geolocation->country_code;
       $transaction->city = $geolocation->city;
       $transaction->save();
 
@@ -154,6 +185,7 @@ class TransactionController extends Controller
     if ($transaction) {
 
       if ($response=='yes') {
+        $this->refund_for_client($transaction->id, 0.00005, 'Thank you for answering the survey as a bonus, we will give you a gift!');
         $transaction->poll = 1;
         $transaction->poll_active = 0;
         $transaction->save();
@@ -162,7 +194,7 @@ class TransactionController extends Controller
       
       if ($transaction->user_id == Auth::user()->id && $transaction->refund == 0) {
         if ($response=='not') {
-          $this->refund_for_client($transaction->id);
+          $this->refund_for_client($transaction->id, 0.00005, 'Thank you for answering the survey as a bonus, we will give you a gift!');
           $transaction->poll = 0;
           $transaction->poll_active = 0;
           $transaction->save();

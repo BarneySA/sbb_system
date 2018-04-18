@@ -31,7 +31,7 @@
                                         @endif
                                         <br>
                                         <small> 
-                                            <strong>{{number_format($transaction->amount, 10, ',', '.')}} {{$transaction->currency_name}}</strong>
+                                            <strong>{{number_format($transaction->amount, 10, ',', '.')}} SBB - Token </strong>
                                         </small>
                                     </div>
                                                                     

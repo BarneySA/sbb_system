@@ -40,7 +40,7 @@
                         {{str_limit($product->description, 80)}}
                     </p>
                     <p class="price">
-                        {{number_format($product->amount, 10, ',', '.')}} {{$product->currency}}
+                        {{number_format($product->amount, 10, ',', '.')}} SBB - Token
                     </p>
                 </a>
             </div>

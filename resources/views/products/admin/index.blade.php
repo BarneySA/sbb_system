@@ -92,7 +92,7 @@
                             </td>
                             <td>
                                 {{ number_format($product->amount, 10, ',', '.') }}
-                                {{ $product->currency }}
+                                SBB - Token
                             </td>
                             <td>
                                 {{ \App\Transaction::where('product_id', $product->id)->count() }}

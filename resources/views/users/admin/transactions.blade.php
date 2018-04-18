@@ -36,7 +36,7 @@
                             <h5 style="margin-top: 2px;">
                                 {{number_format(App\Configuration::g()->balance->GAS->balance, 10, ',', '.')}}
                                 <span style="font-size: 14px; margin-top: 0px; display: block; opacity: .7;">
-                                    GAS
+                                    SBB - Token
                                     <span style="display: block; margin-top: 0">
                                         Balance
                                     </span>
@@ -135,7 +135,7 @@
                             @endif
                         </td>
                         <td>
-                            {{number_format($transaction->amount, 10, ',', '.')}} {{$transaction->currency_name}}
+                            {{number_format($transaction->amount, 10, ',', '.')}} SBB - Token
                         </td>
                         <td>
 

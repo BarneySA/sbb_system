@@ -38,7 +38,7 @@
                     {{number_format(collect(\App\Transaction::where('refund', 0)->get())->sum('amount'), 10, ',', '.')}}
                 </div>
                 <div class="line">
-                    <div class="subtitle">Gains in GAS</div>
+                    <div class="subtitle">Gains in SBB - Token</div>
                 </div>
             </div>
         </div>

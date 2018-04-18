@@ -61,7 +61,7 @@
                         <div class="form-group">
                             <label>Currency</label>
                             <select name="" class="form-control">
-                                <option>GAS</option>
+                                <option>SBB - Token</option>
                             </select>
                         </div>
                     </div>

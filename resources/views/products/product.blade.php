@@ -1,10 +1,10 @@
 @extends('users.template')
 @section('user_content')
-    @if(count($product)>=1)
+    @if(count($products)>=1)
     
     <div class="category mt-3">
         <div class="row">
-            @foreach($product as $product)
+            @foreach($products as $product)
             <div class="col-md-12">
             <div class="product" product-id="{{$product->id}}">
                 <div class="content in">
@@ -19,7 +19,7 @@
                             </div>
                             <div class="col-md-6 text-right">
                                 <h3 class="amount" amount="{{$product->amount}}" currency="{{$product->currency}}">
-                                    {{number_format($product->amount, 10, ',', '.')}} {{$product->currency}}
+                                    {{number_format($product->amount, 10, ',', '.')}} SBB - Token
                                 </h3>
                             </div>
                         </div>

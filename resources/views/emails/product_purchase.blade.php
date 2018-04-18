@@ -49,7 +49,7 @@
                     Currency
                 </td>
                 <td>
-                    {{$transaction->currency_name}}
+                    SBB - Token
                 </td>
             </tr>
         </table>

@@ -11,7 +11,25 @@
     
     <!-- START PAGE CONTAINER -->
     <div class="container">
+    @if(session('status')!=null)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                {{session('status')}}
+            </div>
+        </div>
+    </div>
+    @endif
 
+    @if(session('success')!=null)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                {{session('success')}}
+            </div>
+        </div>
+    </div>
+    @endif
         
 
         <table class="table_dt table table-hover table-striped table-bordered" class="display" style="width:100%">
@@ -22,8 +40,7 @@
                     <th>Role</th>
                     <th>Email</th>
                     <th>Status</th>
-                    <th>NEO</th>
-                    <th>GAS</th>
+                    <th>SBB - Token</th>
                     <th>Transactions</th>
                 </tr>
             </thead>
@@ -38,12 +55,17 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                             <li>
-                                <a class="dropdown-item" href="{{url('/cp/admin/send/GAS/'.$user->id)}}">Send GAS</a>
+                                <a class="dropdown-item" href="{{url('/cp/admin/send/GAS/'.$user->id)}}">Send SBB - Token</a>
                             </li>
                             
                             <li>
+                                <a class="dropdown-item" href="{{url('/cp/admin/send_reward/'.$user->id)}}">Send reward</a>
+                            </li>
+
+                            <li>
                                 <a class="dropdown-item" href="{{url('/cp/admin/change_status_acc/'.$user->id)}}">Deactivate account</a>
                             </li>
+
                             
                         </div>
                         </div>
@@ -75,9 +97,6 @@
                             Inative
                         </span>
                         @endif
-                    </td>
-                    <td>
-                        {{number_format(App\User::auth($user->id)->balance->NEO->balance, 10, ',', '.')}}
                     </td>
                     <td>
                         {{number_format(App\User::auth($user->id)->balance->GAS->balance, 10, ',', '.')}}
