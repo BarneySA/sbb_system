@@ -76,6 +76,7 @@
                         <th>Opt</th>
                         <th>ID</th>
                         <th>Date</th>
+                        <th>Product</th>
                         <th>Client</th>
                         <th>Amount</th>
                         <th>Description</th>
@@ -128,6 +129,12 @@
                             {{ $transaction->created_at->format('Y-m-d H:i:s') }}
                         </td>
                         <td>
+                            @if($transaction->type!=3)
+                                {{App\Product::find($transaction->product_id)->title}}
+                            @else
+                            ---
+                            @endif
+                        <td>
                             @if($transaction->user_id!=-1)
                                 {{ App\User::find($transaction->user_id)->name }}
                             @else
@@ -156,7 +163,9 @@
                                     
                                     <p style="font-weight: bold;">TXID: </p>
                                     <p>
-                                        {{$transaction->txid}} 
+                                        <a href="https://neotracker.io/tx/{{$transaction->txid}}" target="tx">
+                                            {{$transaction->txid}} 
+                                        </a>
                                     </p>
                                     
                                     <p style="display: block;">

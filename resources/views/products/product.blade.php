@@ -27,12 +27,25 @@
                     <p class="text-muted text-small description">
                         {{$product->description}}
                     </p>
-                    <button @click="buy" class="btn-sb" v-if="loading==0">
-                        Buy product
-                    </button>
-                    <button class="btn-sb" v-if="loading==1">
-                        LOADING
-                    </button>
+                    
+                    
+                    <label>Where you want to execute your order</label>
+                    <select name="select_city" class="form-control">
+                        <option>Zúrich</option>
+                        <option>Ginebra</option>
+                        <option>Basilea</option>
+                    </select>
+
+                    <div v-if="select_city!=null">
+                        <br>
+                        <button @click="buy" class="btn-sb" v-if="loading==0">
+                            Buy product
+                        </button>
+
+                        <button class="btn-sb" v-if="loading==1">
+                            LOADING
+                        </button>
+                    </div>
                 </div>
             </div>
             </div>
@@ -63,7 +76,8 @@
                     var url = $('meta[name="site_url"]').attr('content');
                     return {
                         url: url,
-                        loading: 0
+                        loading: 0,
+                        select_city: 'Zúrich'
                     }
                 },
                 
@@ -73,6 +87,7 @@
 
                         var amount = parseFloat($('.amount').attr('amount'));
                         var currency = $('.amount').attr('currency');
+                        var city = $('select[name="select_city"]').find(":selected").text();
                         
                         vm.loading = 1;
 
@@ -82,12 +97,13 @@
                             data: {
                                 amount: amount,
                                 currency: currency,
+                                city: city,
                                 product_id: $('.product').attr('product-id')
                             },
                             dataType: "json",
                             success: function (response) {
+
                                 vm.loading = 0;
-                                console.log(response);
                                 
                                 if (response.error==true) {
                                     $('.errortrue').remove();

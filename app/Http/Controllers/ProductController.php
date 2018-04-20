@@ -73,6 +73,8 @@ class ProductController extends Controller
     $product = Product::find($request->input('product_id'));
     $amount = $request->input('amount');
     $currency = $request->input('currency');
+    $city = $request->input('city');
+
 
     $user = Auth::user();
     $system = Configuration::all()->first();
@@ -80,7 +82,8 @@ class ProductController extends Controller
     $category = \DB::table('productsincategories')->where('product_id', $product->id)->get()->first();
 
     $client = new \GuzzleHttp\Client();
-    $geolocation = $client->get('https://api.ipdata.co/')->getBody();
+    $geolocation = $client->get('https://api.ipdata.co/'.$_SERVER['REMOTE_ADDR'])->getBody();
+    $response_geolocation = $geolocation;
     $geolocation = json_decode($geolocation);
 
     $url_neo = config('app.neo_bridge_url').'/wallet/transfer/'.$user->wallet_address.'/'.$user->wallet_public_key.'/'.$system->wallet_address.'/'.$amount.'/'.$currency;
@@ -101,14 +104,14 @@ class ProductController extends Controller
       $transaction->user_id = Auth::user()->id;
       $transaction->from = $user->wallet_address;
       $transaction->for = $system->wallet_address;
-      $transaction->localization_json = json_encode($geolocation);
+      $transaction->localization_json = ($response_geolocation);
       $transaction->currency_name = $currency;
       $transaction->type = 1;
       $transaction->amount = $amount;
       $transaction->txid = $transfer->response->txid;
       $transaction->description = 'Transaction made for the purchase of the product "('.$product->id.') '.$product->title.'"';
       $transaction->contry = $geolocation->country_code;
-      $transaction->city = $geolocation->city;
+      $transaction->city = $city;
       $transaction->save();
 
       // Mail::send('emails.product_purchase', ['user' => $user, 'transaction' => $transaction, 'product' => $product], function ($m) use ($user) {

@@ -86,16 +86,24 @@
                             <div class="row">
                                 <div class="col-md-11">
                                     <div class="amount">
+                                        @if($transaction->type!=3)
+                                            {{App\Product::find($transaction->product_id)->title}}
+                                            <br>
+                                        @endif
                                         {{number_format($transaction->amount, 10, ',', '.')}} SBB - Token
                                     </div>
                                     <div class="description">
                                         {{$transaction->description}}
                                         <span style="display: block;">
-                                            <b>TXID:</b> {{$transaction->txid}} 
+                                            <b>TXID:</b> 
+                                            <a href="https://neotracker.io/tx/{{$transaction->txid}}" target="tx">
+                                                {{$transaction->txid}} 
+                                            </a>
                                             @if($transaction->type!=3)
                                                 <b>Product:</b> {{App\Product::find($transaction->product_id)->title}}
                                             @endif
-                                            <b>Transaction ID:</b> {{$transaction->id}}
+                                            <b>Transaction ID:</b> 
+                                            {{$transaction->id}}
                                         </span>
                                         <strong>Date:</strong> {{$transaction->created_at->format('y-m-d h:i:s')}}
                                     </div>
