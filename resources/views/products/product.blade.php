@@ -19,7 +19,20 @@
                             </div>
                             <div class="col-md-6 text-right">
                                 <h3 class="amount" amount="{{$product->amount}}" currency="{{$product->currency}}">
-                                    {{number_format($product->amount, 10, ',', '.')}} SBB - Token
+                                    
+                                    @php
+                                        $client = new \GuzzleHttp\Client();
+                                        $gas_amount = $client->get('https://api.coinmarketcap.com/v1/ticker/gas/?convert=CHF')->getBody();
+                                        $gas_amount = json_decode($gas_amount);
+                                        
+                                        $product_amount['gas'] = $product->amount;
+                                        $product_amount['chf'] = $product->amount * $gas_amount[0]->price_chf;
+
+                                    @endphp
+                                    {{number_format($product_amount['gas'], 10, ',', '.')}} SBB - Token
+                                    <br>
+                                    {{number_format($product_amount['chf'], 10, ',', '.')}} CHF
+
                                 </h3>
                             </div>
                         </div>

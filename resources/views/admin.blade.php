@@ -174,10 +174,12 @@
                                             {{$transaction->description}}
                                         </p>
                                         
+                                        <br>
+                                        <img src="{{url('/images/neotracker.png')}}" style="height: 35px;" alt="">
                                         <p style="font-weight: bold;">TXID: </p>
                                         <p>
                                             <a href="https://neotracker.io/tx/{{$transaction->txid}}" target="tx">
-                                                {{$transaction->txid}} 
+                                                 {{$transaction->txid}} 
                                             </a>
                                         </p>
                                         

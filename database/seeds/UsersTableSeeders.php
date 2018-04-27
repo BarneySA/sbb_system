@@ -57,5 +57,20 @@ class UsersTableSeeders extends Seeder
         $user->status = '1';
         $user->save();
 
+
+        $user = new App\User;
+        $user->name = 'Admin Contract';
+        $user->username = 'admin';
+        $user->password = \Hash::make('123456789');
+        $user->birthdate = '1994-09-14';
+        $user->contry = 'AR';
+        $user->email = 'admin@gmail.com';
+        $user->city = 'Buenos Aires';
+        $user->wallet_public_key = '0e56e4901bcb64a8193c5ca60939c346a2d2149c0f23e1af6c97f4c93ae176e1';
+        $user->wallet_address = 'Ae9ZE9y3g2yJSX2kLwMx8PT24V68jNX9Ms';
+        $user->role = 1;
+        $user->status = '1';
+        $user->save();
+
     }
 }

@@ -95,9 +95,10 @@
                                     <div class="description">
                                         {{$transaction->description}}
                                         <span style="display: block;">
+                                            <img src="{{url('/images/neotracker.png')}}" style="height: 35px;" alt="">
                                             <b>TXID:</b> 
                                             <a href="https://neotracker.io/tx/{{$transaction->txid}}" target="tx">
-                                                {{$transaction->txid}} 
+                                                 {{$transaction->txid}} 
                                             </a>
                                             @if($transaction->type!=3)
                                                 <b>Product:</b> {{App\Product::find($transaction->product_id)->title}}

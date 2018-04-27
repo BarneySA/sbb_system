@@ -163,7 +163,8 @@
         <script>
             $(document).ready(function(){
                 $('.table_dt').DataTable({
-                    "responsive": true
+                    "responsive": true,
+                     "order": [[ 2, "desc" ]]
                 });
                 $( ".date" ).datepicker({ 
                     changeMonth: true,
