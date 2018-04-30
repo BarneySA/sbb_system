@@ -38,7 +38,9 @@
                                     <div class="description mt-1">
                                         {{$transaction->description}}
                                         <span style="display: block;">
+                                            <img src="{{url('/images/neotracker.png')}}" style="height: 35px;" alt="">
                                             <b>TXID:</b> {{$transaction->txid}} 
+                                            <br>
                                             <b>Transaction ID:</b> {{$transaction->id}}
                                         </span>
                                         <strong>Date:</strong> {{$transaction->created_at->format('y-m-d h:i:s')}}

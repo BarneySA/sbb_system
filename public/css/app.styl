@@ -783,7 +783,15 @@ label {
 
 		.description {
 			font-size: 13px;
-			opacity: .5;
+			opacity: 1;
+			@media (max-width: 600px) {
+				width: 100%;
+				overflow: auto;
+			}
+
+			img {
+				height: 20px !important;
+			}
 		}
 
 	}

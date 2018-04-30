@@ -100,6 +100,7 @@
                                             <a href="https://neotracker.io/tx/{{$transaction->txid}}" target="tx">
                                                  {{$transaction->txid}} 
                                             </a>
+                                            <br>
                                             @if($transaction->type!=3)
                                                 <b>Product:</b> {{App\Product::find($transaction->product_id)->title}}
                                             @endif

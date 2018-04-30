@@ -79,7 +79,7 @@
 
                         <ul class="app-header-buttons pull-right">           
                             <li>
-                                <a href={{ url('/logouth') }}" class="btn btn-default btn-icon"><span class="icon-power-switch"></span></a>
+                                <a href="{{ url('/logouth') }}" class="btn btn-default btn-icon"><span class="icon-power-switch"></span></a>
                             </li>
                         </ul>
                     </div>
