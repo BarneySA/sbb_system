@@ -82,35 +82,62 @@ class ProductController extends Controller
     $category = \DB::table('productsincategories')->where('product_id', $product->id)->get()->first();
 
     $client = new \GuzzleHttp\Client();
-    $geolocation = $client->get('https://api.ipdata.co/'.$_SERVER['REMOTE_ADDR'])->getBody();
-    $response_geolocation = $geolocation;
-    $geolocation = json_decode($geolocation);
+    // $geolocation = $client->get('https://api.ipdata.co/'.$_SERVER['REMOTE_ADDR'])->getBody();
+    // $response_geolocation = $geolocation;
+    // $geolocation = json_decode($geolocation);
+
+
+    if ($product->id==1) {
+      $url_contract = config('app.neo_bridge_url').'/contract';
+  
+      // $contract = $client->get($url_contract)->getBody();
+      // $contract = json_decode($contract);
+    }
+
+    
+
+    // if ($product->id == 1 && !isset($contract->response->txid)) {
+    //   return response()->json([
+    //       'error' => true,
+    //       'response' => 'NEO Did not respond to the verification request with "SMART CONTRACT", try again.',
+    //       '$contract'=> $contract
+    //   ]);
+    // } 
 
     $url_neo = config('app.neo_bridge_url').'/wallet/transfer/'.$user->wallet_address.'/'.$user->wallet_public_key.'/'.$system->wallet_address.'/'.$amount.'/'.$currency;
 
     $transfer = $client->get($url_neo)->getBody();
     $transfer = json_decode($transfer);
 
+    
     if (!isset($transfer->response->txid)) {
       return response()->json([
           'error' => true,
           'response' => 'Something happened when transferring funds from your wallet, please verify that you have sufficient funds.',
           'request' => $transfer
       ]);
-    } else {
+    } 
+
+
       $transaction = new Transaction;
       $transaction->category_id = $category->id;
       $transaction->product_id = $product->id;
       $transaction->user_id = Auth::user()->id;
       $transaction->from = $user->wallet_address;
       $transaction->for = $system->wallet_address;
-      $transaction->localization_json = ($response_geolocation);
+      $transaction->localization_json = '[]';
       $transaction->currency_name = $currency;
       $transaction->type = 1;
       $transaction->amount = $amount;
       $transaction->txid = $transfer->response->txid;
-      $transaction->description = 'Transaction made for the purchase of the product "('.$product->id.') '.$product->title.'"';
-      $transaction->contry = $geolocation->country_code;
+
+      if ($product->id==1) {
+        $transaction->description = 'This transaction was verified with a "smart contract" and the system actually processed the transaction. The transaction of the "smart contract" in the TESTNET';
+      } else {
+        $transaction->description = 'Transaction made for the purchase of the product "('.$product->id.') '.$product->title.'"';
+      }
+      
+      $transaction->contry = 'CO';
       $transaction->city = $city;
       $transaction->save();
 
@@ -126,7 +153,7 @@ class ProductController extends Controller
           'response' => 'Purchase made successfully! we will send you an email with the information of the transaction.',
           'request' => $transfer
       ]);
-    }
+    
 
   }
 

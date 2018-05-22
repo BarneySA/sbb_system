@@ -23,6 +23,22 @@
                             Balance
                         </span>
                     </span>
+
+                    @php
+                        $client = new \GuzzleHttp\Client();
+                        $gas_amount = $client->get('https://api.coinmarketcap.com/v1/ticker/gas/?convert=CHF')->getBody();
+                        $gas_amount = json_decode($gas_amount);
+                            
+                        $balance = App\User::auth()->balance->GAS->balance * $gas_amount[0]->price_chf;
+
+                    @endphp
+                    --
+                    <span style="font-size: 13px; margin-top: 5px; display: block; opacity: .7;">
+                        {{number_format( $balance, 10, ',', '.')}} CHF
+                    </span>
+
+
+
                 </h5>
 
             </div>
@@ -90,7 +106,16 @@
                                             {{App\Product::find($transaction->product_id)->title}}
                                             <br>
                                         @endif
-                                        {{number_format($transaction->amount, 10, ',', '.')}} SBB - Token
+                                        {{number_format($transaction->amount, 10, ',', '.')}} SBB - Token /
+                                        @php
+                                            $client = new \GuzzleHttp\Client();
+                                            $gas_amount = $client->get('https://api.coinmarketcap.com/v1/ticker/gas/?convert=CHF')->getBody();
+                                            $gas_amount = json_decode($gas_amount);
+                                                
+                                            $transaction_amo = $transaction->amount * $gas_amount[0]->price_chf;
+
+                                        @endphp
+                                        {{number_format($transaction_amo, 10, ',', '.')}} CHF
                                     </div>
                                     <div class="description">
                                         {{$transaction->description}}

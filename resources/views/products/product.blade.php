@@ -24,7 +24,7 @@
                                         $client = new \GuzzleHttp\Client();
                                         $gas_amount = $client->get('https://api.coinmarketcap.com/v1/ticker/gas/?convert=CHF')->getBody();
                                         $gas_amount = json_decode($gas_amount);
-                                        
+                                         
                                         $product_amount['gas'] = $product->amount;
                                         $product_amount['chf'] = $product->amount * $gas_amount[0]->price_chf;
 
@@ -115,6 +115,7 @@
                             },
                             dataType: "json",
                             success: function (response) {
+                                console.log(response);
 
                                 vm.loading = 0;
                                 
@@ -141,4 +142,11 @@
         });
     </script>
 
+    <style>
+        .category .product {
+          max-height: initial;
+          min-height: 500px !important;
+            
+        }
+    </style>
 @endsection

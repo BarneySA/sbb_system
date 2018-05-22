@@ -135,6 +135,9 @@ class UserController extends Controller
         $request->session()->flash('status', 'Your balance does not have enough funds to process this transaction, please check the balance of the master wallet. The maximum you can send is: GAS '.$configuration->balance->GAS->balance);
         return redirect()->back();
     } else {
+        
+        $amount = str_replace(',', '.', $amount);
+
         $url_neo = config('app.neo_bridge_url').'/wallet/transfer/'.$configuration->wallet_address.'/'.$configuration->wallet_public_key.'/'.$user->wallet_address.'/'.$amount.'/'.$currency;
         
         $client = new \GuzzleHttp\Client();
@@ -165,9 +168,10 @@ class UserController extends Controller
             $transaction->save();
     
             $request->session()->flash( 'success', 'Successful tide funds were sent. You can see the transaction information in the transaction module.');
-            return redirect()->back();
+            
         }
 
+        return redirect()->back();
 
     }
     

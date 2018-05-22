@@ -39,7 +39,7 @@
                             </li>
                             <li>
                                 <a href="{{url('/logouth')}}">
-                                    Logouth
+                                    Logout
                                 </a>
                             </li>
                         @endif

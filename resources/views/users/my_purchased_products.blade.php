@@ -31,7 +31,19 @@
                                         @endif
                                         <br>
                                         <small> 
-                                            <strong>{{number_format($transaction->amount, 10, ',', '.')}} SBB - Token </strong>
+                                            <strong>
+                                                {{number_format($transaction->amount, 10, ',', '.')}} SBB - Token  /
+                                                @php
+                                                    $client = new \GuzzleHttp\Client();
+                                                    $gas_amount = $client->get('https://api.coinmarketcap.com/v1/ticker/gas/?convert=CHF')->getBody();
+                                                    $gas_amount = json_decode($gas_amount);
+                                                        
+                                                    $balance = $transaction->amount * $gas_amount[0]->price_chf;
+                                                @endphp
+                                                <br>
+                                                {{number_format($balance, 10, ',', '.')}} CHF 
+
+                                            </strong>
                                         </small>
                                     </div>
                                                                     

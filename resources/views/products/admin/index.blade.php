@@ -48,8 +48,8 @@
                                         Actions
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        
-                                        @if(\App\Transaction::where('product_id', $product->id)->count() == 0)
+
+                                        @if(\App\Transaction::where('product_id', $product->id)->count() == 0 && $product->id!=1)
                                             <li>
                                                 <a class="dropdown-item" href="{{url('/cp/admin/products/destroy/'.$product->id)}}">Remove</a>
                                             </li>
@@ -77,6 +77,15 @@
                             </td>
                             <td>
                                 {{ $product->title }}
+                                @if($product->id==1)
+                                 <br>
+                                    <b> 
+                                        Product with  
+                                        <u>
+                                            smart contract
+                                        </u>
+                                    </b>
+                                @endif
                             </td>
                             
                             <td>
@@ -92,7 +101,16 @@
                             </td>
                             <td>
                                 {{ number_format($product->amount, 10, ',', '.') }}
-                                SBB - Token
+                                SBB - Token 
+                                @php
+                                    $client = new \GuzzleHttp\Client();
+                                    $gas_amount = $client->get('https://api.coinmarketcap.com/v1/ticker/gas/?convert=CHF')->getBody();
+                                    $gas_amount = json_decode($gas_amount);
+                                        
+                                    $balance = $product->amount * $gas_amount[0]->price_chf;
+                                @endphp
+                                <br>
+                                {{number_format($balance, 10, ',', '.')}} CHF 
                             </td>
                             <td>
                                 {{ \App\Transaction::where('product_id', $product->id)->count() }}
