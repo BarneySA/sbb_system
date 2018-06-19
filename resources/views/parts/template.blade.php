@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{url('/css/app.css')}}">
     <link rel="icon" type="image/png" href="{{url('/images/logo2.png')}}" />
 
-    <title>SB</title>
+    <title>SBB</title>
   </head>
   <body>
 
