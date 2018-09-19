@@ -34,7 +34,7 @@
                         </div>
                         <div class="col-6 col-md-10 text-left">
                             <h5 style="margin-top: 2px;">
-                                {{number_format(App\Configuration::g()->balance->GAS->balance, 10, ',', '.')}}
+                                {{number_format(App\Configuration::g()->balance->GAS->balance*100000, 3, ',', '.')}}
                                 <span style="font-size: 14px; margin-top: 0px; display: block; opacity: .7;">
                                     SBB - Token
                                     <span style="display: block; margin-top: 0">
@@ -142,7 +142,7 @@
                             @endif
                         </td>
                         <td>
-                            {{number_format($transaction->amount, 10, ',', '.')}} SBB - Token
+                            {{number_format($transaction->amount*100000, 10, ',', '.')}} SBB - Token
                             @php
                                 $client = new \GuzzleHttp\Client();
                                 $gas_amount = $client->get('https://api.coinmarketcap.com/v1/ticker/gas/?convert=CHF')->getBody();
@@ -151,7 +151,7 @@
                                 $balance = $transaction->amount * $gas_amount[0]->price_chf;
                             @endphp
                             <br>
-                            {{number_format($balance, 10, ',', '.')}} CHF 
+                            {{number_format($balance*100000, 10, ',', '.')}} CHF 
                         </td>
                         <td>
 

@@ -41,7 +41,7 @@
                     Amount
                 </td>
                 <td>
-                    {{number_format($transaction->amount, 10, ',', '.')}}
+                    {{number_format($transaction->amount*100000, 3, ',', '.')}}
                 </td>
             </tr>
             <tr>

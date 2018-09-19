@@ -211,7 +211,7 @@ class UserController extends Controller
             $transaction->refund = 0;
             $transaction->amount = $amount;
             $transaction->txid = $transfer->response->txid;
-            $transaction->description = 'The administrator sent you a gift for '.number_format($amount, 10, ',', '.').' SBB - Token ['.$user->id.'] '.$user->name.' ';
+            $transaction->description = 'The administrator sent you a gift for '.number_format($amount*100000, 3, ',', '.').' SBB - Token ['.$user->id.'] '.$user->name.' ';
             $transaction->contry = $geolocation->country_code;
             $transaction->city = $geolocation->city;
             $transaction->save();

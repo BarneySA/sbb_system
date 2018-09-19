@@ -49,9 +49,9 @@
                             $product_amount['chf'] = $product->amount * $gas_amount[0]->price_chf;
 
                         @endphp
-                        {{number_format($product_amount['gas'], 10, ',', '.')}} SBB - Token
+                        {{number_format($product_amount['gas']*100000, 3, ',', '.')}} SBB - Token
                         <br>
-                        {{number_format($product_amount['chf'], 10, ',', '.')}} CHF                    
+                        {{number_format($product_amount['chf']*100000, 3, ',', '.')}} CHF                    
                     </p>
                 </a>
             </div>

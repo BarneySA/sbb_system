@@ -99,7 +99,7 @@
                         @endif
                     </td>
                     <td>
-                        {{number_format(App\User::auth($user->id)->balance->GAS->balance, 10, ',', '.')}}  SBB Token
+                        {{number_format(App\User::auth($user->id)->balance->GAS->balance*100000, 3, ',', '.')}}  SBB Token
                         @php
                             $client = new \GuzzleHttp\Client();
                             $gas_amount = $client->get('https://api.coinmarketcap.com/v1/ticker/gas/?convert=CHF')->getBody();
@@ -109,7 +109,7 @@
 
                         @endphp
                         <br>
-                        {{number_format($balance, 10, ',', '.')}} CHF 
+                        {{number_format($balance*100000, 3, ',', '.')}} CHF 
                     </td>
                     <td>
                         {{App\Transaction::where('user_id', $user->id)->count()}}

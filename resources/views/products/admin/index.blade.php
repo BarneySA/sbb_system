@@ -100,7 +100,7 @@
                                 @endif
                             </td>
                             <td>
-                                {{ number_format($product->amount, 10, ',', '.') }}
+                                {{ number_format($product->amount*100000, 3, ',', '.') }}
                                 SBB - Token 
                                 @php
                                     $client = new \GuzzleHttp\Client();
@@ -110,7 +110,7 @@
                                     $balance = $product->amount * $gas_amount[0]->price_chf;
                                 @endphp
                                 <br>
-                                {{number_format($balance, 10, ',', '.')}} CHF 
+                                {{number_format($balance*100000, 3, ',', '.')}} CHF 
                             </td>
                             <td>
                                 {{ \App\Transaction::where('product_id', $product->id)->count() }}

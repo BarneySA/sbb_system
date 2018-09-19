@@ -109,7 +109,7 @@
                                 <div class="title">Gains</div>
                             </div>
                             <div class="intval intval-lg">
-                                {{number_format($totals->in, 10, ',', '.')}}
+                                {{number_format($totals->in*100000, 3, ',', '.')}}
                             </div>
                             <div class="line">
                                 <div class="subtitle">Gains in SBB - Token</div>
@@ -155,7 +155,7 @@
                                 @endif
                             </td>
                             <td>
-                                {{number_format($transaction->amount, 10, ',', '.')}} SBB - Token
+                                {{number_format($transaction->amount*100000, 3, ',', '.')}} SBB - Token
                             </td>
                             <td>
 
